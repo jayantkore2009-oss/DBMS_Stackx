@@ -234,12 +234,22 @@ service cloud.firestore {
       allow update: if isSeller()
         && resource.data.sellerId == request.auth.uid
         && resource.data.status == 'Pending Acceptance'
-        && request.resource.data.status == 'Confirmed & In Transit'
-        && request.resource.data.diff(resource.data).affectedKeys()
-          .hasOnly(['status', 'deliveryDate', 'updatedAt'])
-        && request.resource.data.deliveryDate is timestamp
-        && request.resource.data.deliveryDate >= request.time
-        && request.resource.data.updatedAt == request.time;
+        && (
+          (
+            request.resource.data.status == 'Confirmed & In Transit'
+            && request.resource.data.diff(resource.data).affectedKeys()
+              .hasOnly(['status', 'deliveryDate', 'updatedAt'])
+            && request.resource.data.deliveryDate is timestamp
+            && request.resource.data.deliveryDate >= request.time
+            && request.resource.data.updatedAt == request.time
+          )
+          || (
+            request.resource.data.status == 'Rejected by Seller'
+            && request.resource.data.diff(resource.data).affectedKeys()
+              .hasOnly(['status', 'updatedAt'])
+            && request.resource.data.updatedAt == request.time
+          )
+        );
       allow delete: if false;
     }
   }

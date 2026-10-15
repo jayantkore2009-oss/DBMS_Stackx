@@ -51,8 +51,8 @@
     .eyebrow::before { width: 25px; height: 1px; content: ""; background: currentColor; opacity: .8; }
     h1, h2, h3, p { margin-top: 0; }
     .hero h1 { margin: 0; font-family: var(--serif); font-size: clamp(48px, 6vw, 78px); font-weight: 500; line-height: 1.02; letter-spacing: -.035em; }
-    .hero-copy > p:not(.eyebrow) { max-width: 340px; margin: 21px 0 30px; color: rgba(255,255,255,.86); font-size: 12px; line-height: 1.9; }
-    .button { min-height: 47px; display: inline-flex; align-items: center; justify-content: center; gap: 12px; padding: 0 22px; border: 1px solid transparent; background: var(--ink); color: white; font-size: 10px; letter-spacing: .09em; text-transform: uppercase; transition: transform .2s, background .2s, color .2s; cursor: pointer; }
+    .hero-copy > p:not(.eyebrow) { max-width: 340px; margin: 21px 0 30px; color: rgba(255,255,255,.86); font-size: 13px; line-height: 1.9; }
+    .button { min-height: 47px; display: inline-flex; align-items: center; justify-content: center; gap: 12px; padding: 0 22px; border: 1px solid transparent; background: var(--ink); color: white; font-size: 11px; letter-spacing: .09em; text-transform: uppercase; transition: transform .2s, background .2s, color .2s; cursor: pointer; }
     .button:hover { transform: translateY(-2px); background: #3d4439; }
     .button-light { border-color: rgba(255,255,255,.65); background: rgba(255,255,255,.12); backdrop-filter: blur(10px); }
     .button-light:hover { background: white; color: var(--ink); }
@@ -61,14 +61,14 @@
     .pagination-line { width: 55px; height: 1px; background: rgba(255,255,255,.45); }
     .pagination-line i { display: block; width: 48%; height: 1px; background: white; }
     .benefits { display: grid; grid-template-columns: repeat(3, 1fr); padding: 25px 12%; border-bottom: 1px solid var(--line); background: rgba(255,255,255,.58); }
-    .benefit { display: flex; align-items: center; justify-content: center; gap: 11px; color: #555950; font-size: 10px; letter-spacing: .035em; }
+    .benefit { display: flex; align-items: center; justify-content: center; gap: 11px; color: #555950; font-size: 11px; letter-spacing: .035em; }
     .benefit + .benefit { border-left: 1px solid var(--line); }
     .benefit svg { width: 17px; height: 17px; stroke: var(--accent); stroke-width: 1.4; fill: none; }
     .section { padding: 90px 7.1%; }
     .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 31px; }
-    .section-kicker { margin-bottom: 11px; color: var(--accent); font-size: 9px; letter-spacing: .19em; text-transform: uppercase; }
+    .section-kicker { margin-bottom: 11px; color: var(--accent); font-size: 10px; letter-spacing: .19em; text-transform: uppercase; }
     .section-heading h2 { margin: 0; font-family: var(--serif); font-size: clamp(31px, 3.4vw, 43px); font-weight: 500; letter-spacing: -.025em; }
-    .text-link { display: inline-flex; align-items: center; gap: 9px; padding-bottom: 5px; border-bottom: 1px solid #aeb2a8; font-size: 10px; letter-spacing: .04em; white-space: nowrap; }
+    .text-link { display: inline-flex; align-items: center; gap: 9px; padding-bottom: 5px; border-bottom: 1px solid #aeb2a8; font-size: 11px; letter-spacing: .04em; white-space: nowrap; }
     .text-link svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 1.5; transition: transform .2s; }
     .text-link:hover svg { transform: translateX(3px); }
     .category-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
@@ -93,14 +93,14 @@
     .wishlist:hover { transform: scale(1.08); }
     .wishlist svg { width: 16px; height: 16px; stroke: #555950; stroke-width: 1.4; fill: none; }
     .wishlist.liked svg { fill: #a75f54; stroke: #a75f54; }
-    .quick-add { position: absolute; right: 10px; bottom: 10px; left: 10px; min-height: 39px; transform: translateY(8px); opacity: 0; transition: transform .25s, opacity .25s; }
-    .product-card:hover .quick-add, .quick-add:focus-visible { transform: translateY(0); opacity: 1; }
+    .quick-add { position: absolute; right: 10px; bottom: 10px; left: 10px; min-height: 39px; }
+    .product-card:hover .quick-add { transform: translateY(0); }
     .quick-add .button { width: 100%; min-height: 39px; background: rgba(255,255,255,.91); color: var(--ink); backdrop-filter: blur(10px); }
     .quick-add .button:hover { background: var(--ink); color: white; }
     .product-meta { display: flex; align-items: start; justify-content: space-between; gap: 8px; padding-top: 13px; }
-    .product-name { margin: 0 0 5px; font-size: 11px; font-weight: 500; }
-    .product-detail { margin: 0; color: #85877f; font-size: 9px; }
-    .product-price { padding-top: 1px; font-size: 10px; white-space: nowrap; }
+    .product-name { margin: 0 0 5px; font-size: 13px; font-weight: 500; }
+    .product-detail { margin: 0; color: #85877f; font-size: 11px; }
+    .product-price { padding-top: 1px; font-size: 12px; white-space: nowrap; }
     .editorial { display: grid; min-height: 455px; grid-template-columns: 1fr 1fr; background: #e8ebe4; }
     .editorial-image { min-height: 455px; object-fit: cover; }
     .editorial-copy { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; padding: 65px clamp(35px, 8vw, 115px); }
@@ -166,12 +166,14 @@
       .nav-links.open { display: flex; flex-direction: column; }
       .nav-links a { padding: 13px 0; border-bottom: 1px solid var(--line); }
       .header-actions { gap: 13px; }
+      .nav-mailbox { gap: 4px; min-height: 30px; padding: 0 8px; font-size: 8px; }
+      .nav-mailbox svg { width: 14px; height: 14px; }
       .hero { min-height: 590px; height: calc(83svh - 31px); max-height: 700px; }
       .hero-image { object-position: 58% center; }
       .hero::after { background: linear-gradient(90deg, rgba(22,25,21,.48), rgba(22,25,21,.18) 75%, rgba(22,25,21,.08)); }
       .hero-copy { left: 8%; width: 84%; }
       .hero h1 { font-size: clamp(49px, 14vw, 69px); }
-      .hero-copy > p:not(.eyebrow) { max-width: 290px; font-size: 11px; }
+      .hero-copy > p:not(.eyebrow) { max-width: 290px; font-size: 13px; }
       .hero-pagination { right: 8%; bottom: 25px; }
       .benefits { grid-template-columns: 1fr; gap: 0; padding: 5px 8%; }
       .benefit { justify-content: flex-start; padding: 13px 0; font-size: 9px; }
@@ -180,7 +182,7 @@
       .section { padding: 62px 20px; }
       .section-heading { align-items: flex-end; margin-bottom: 23px; }
       .section-heading h2 { font-size: 32px; }
-      .section-heading .text-link { font-size: 9px; }
+      .section-heading .text-link { font-size: 10px; }
       .category-grid { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; }
       .category-card, .category-card img { min-height: 220px; }
       .category-label { right: 13px; bottom: 13px; left: 13px; font-size: 18px; }
@@ -190,13 +192,13 @@
       .filter-button { padding: 9px 12px; }
       .product-grid { gap: 23px 11px; }
       .product-image-wrap { aspect-ratio: .75; }
-      .product-tag { top: 8px; left: 8px; padding: 6px 7px; font-size: 7px; }
+      .product-tag { top: 8px; left: 8px; padding: 6px 7px; font-size: 8px; }
       .wishlist { top: 7px; right: 7px; width: 30px; height: 30px; }
       .quick-add { right: 7px; bottom: 7px; left: 7px; }
-      .quick-add .button { min-height: 35px; padding: 0 8px; font-size: 8px; }
-      .product-name { font-size: 10px; }
-      .product-detail { font-size: 8px; }
-      .product-price { font-size: 9px; }
+      .quick-add .button { min-height: 40px; padding: 0 8px; font-size: 10px; }
+      .product-name { font-size: 12px; }
+      .product-detail { font-size: 10px; }
+      .product-price { font-size: 11px; }
       .editorial { grid-template-columns: 1fr; }
       .editorial-image { min-height: 310px; max-height: 390px; }
       .editorial-copy { padding: 42px 25px 48px; }
@@ -221,7 +223,7 @@
       --shadow: 0 16px 44px rgba(25, 29, 35, .12);
     }
     body { background: #fff; }
-    .announcement { height: 32px; background: #f5f6f7; color: #454a52; font-size: 9px; letter-spacing: .1em; }
+    .announcement { height: 32px; background: #f5f6f7; color: #454a52; font-size: 10px; letter-spacing: .1em; }
     .site-header { grid-template-columns: auto 1fr auto; height: 72px; padding: 0 6%; background: rgba(255,255,255,.78); }
     .wordmark { grid-column: 1; grid-row: 1; padding: 0; font-family: var(--sans); font-size: 27px; font-weight: 700; letter-spacing: .16em; }
     .nav-links { grid-column: 2; grid-row: 1; justify-content: center; gap: 32px; }
@@ -234,7 +236,7 @@
     .hero-copy { position: relative; inset: auto; width: auto; transform: none; color: var(--ink); }
     .hero-copy .eyebrow { color: #5d6674; }
     .hero h1 { max-width: 460px; font-family: var(--sans); font-size: clamp(48px, 5.6vw, 72px); font-weight: 600; line-height: 1.04; letter-spacing: -.065em; }
-    .hero-copy > p:not(.eyebrow) { color: #696e76; font-size: 13px; }
+    .hero-copy > p:not(.eyebrow) { color: #696e76; font-size: 14px; }
     .button { background: #17191c; }
     .button:hover { background: #373b42; }
     .button-light { border-color: #17191c; background: #17191c; color: #fff; backdrop-filter: none; }
@@ -252,8 +254,8 @@
     .category-card::after { background: linear-gradient(transparent, rgba(17,20,25,.56)); }
     .category-label { font-family: var(--sans); font-size: 17px; font-weight: 500; }
     .product-image-wrap { border-radius: 3px; }
-    .product-tag { color: #40454d; }
-    .filter-button { border-radius: 3px; }
+    .product-tag { color: #40454d; font-size: 9px; }
+    .filter-button { border-radius: 3px; font-size: 11px; }
     .filter-button:hover, .filter-button.active { border-color: #17191c; background: #17191c; color: white; }
     .editorial { background: #f4f5f6; }
     .editorial-copy h2 { font-size: clamp(34px, 4vw, 49px); }
@@ -269,6 +271,9 @@
       .menu-toggle { grid-column: 1; grid-row: 1; }
       .nav-links { grid-column: auto; grid-row: auto; }
       .header-actions { grid-column: 3; grid-row: 1; }
+      .nav-mailbox { position: relative; width: 30px; min-width: 30px; justify-content: center; padding: 0; }
+      .nav-mailbox > span:first-of-type { display: none; }
+      .nav-mailbox .pending-badge { position: absolute; top: -5px; right: -5px; min-width: 15px; height: 15px; padding: 0 3px; }
       .hero { display: flex; min-height: 0; height: auto; max-height: none; flex-direction: column; align-items: stretch; gap: 24px; padding: 45px 22px 46px; }
       .hero-copy { order: 1; }
       .hero-image { order: 2; height: 290px; min-height: 0; object-position: center 56%; }
@@ -349,6 +354,10 @@
     .profile-action img { width: 100%; height: 100%; object-fit: cover; }
     .nav-sign-in { min-height: 32px; padding: 0 12px; border: 1px solid rgba(35,44,58,.16); border-radius: 20px; background: rgba(255,255,255,.65); color: #343b46; font-size: 9px; font-weight: 600; cursor: pointer; }
     .nav-sign-in:hover { background: #f0f2f5; }
+    .nav-mailbox { display: inline-flex; align-items: center; gap: 7px; min-height: 32px; padding: 0 11px; border: 1px solid rgba(35,44,58,.14); border-radius: 20px; background: rgba(255,255,255,.64); color: #343b46; font-size: 9px; font-weight: 600; white-space: nowrap; cursor: pointer; }
+    .nav-mailbox:hover { background: #f0f2f5; }
+    .nav-mailbox svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.5; }
+    .nav-mailbox[hidden], .order-hub-button[hidden] { display: none !important; }
     .profile-menu { position: absolute; z-index: 25; top: calc(100% - 2px); right: 5.5%; display: none; width: min(290px,calc(100vw - 28px)); padding: 17px; border: 1px solid rgba(255,255,255,.9); border-radius: 13px; background: rgba(255,255,255,.92); box-shadow: 0 16px 50px rgba(27,36,50,.14); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
     .profile-menu.open { display: block; }
     .profile-summary { display: flex; align-items: center; gap: 11px; padding-bottom: 13px; border-bottom: 1px solid var(--line); }
@@ -359,6 +368,7 @@
     .profile-summary small { color: #7d8490; font-size: 9px; }
     .profile-summary .profile-contact { margin-top: 5px; overflow: visible; max-width: 220px; white-space: normal; line-height: 1.45; }
     .profile-role { margin: 12px 0; color: #758091; font-size: 9px; text-transform: capitalize; }
+    .profile-listing-count { margin: -5px 0 10px; padding: 8px 10px; border-radius: 7px; background: #f1f3f6; color: #46556b; font-size: 11px; font-weight: 600; }
     .profile-menu button { width: 100%; padding: 10px; border: 0; border-radius: 7px; background: transparent; color: #373e48; font-size: 10px; text-align: left; cursor: pointer; }
     .profile-menu button:hover { background: #f0f2f5; }
     .profile-menu .sign-out-button { color: #a3443e; }
@@ -401,9 +411,12 @@
     .in-stock-note { margin-top: 5px; color: #758091; font-size: 9px; }
     .out-of-stock { background: #e5e7eb !important; color: #7d8490 !important; cursor: not-allowed !important; }
     .stars { color: #c08a35; letter-spacing: .08em; }
-    .product-rating { display: flex; align-items: center; gap: 6px; margin-top: 7px; color: #757d89; font-size: 9px; }
-    .review-link { padding: 0; border: 0; border-bottom: 1px solid #cbd0d8; background: transparent; color: #586579; font-size: 9px; cursor: pointer; }
-    .recent-review { margin-top: 8px; padding-top: 7px; border-top: 1px solid #eceef1; color: #616a77; font-size: 9px; line-height: 1.5; }
+    .product-rating { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; margin-top: 8px; color: #626b78; font-size: 10px; }
+    .review-link { min-height: 32px; margin-top: 2px; padding: 0 10px; border: 1px solid #d7dce4; border-radius: 6px; background: #fff; color: #34445b; font-size: 10px; font-weight: 600; cursor: pointer; transition: background .18s, border-color .18s, color .18s; }
+    .review-link:hover { border-color: #34445b; background: #34445b; color: white; }
+    .review-link:focus-visible { outline: 2px solid #64748b; outline-offset: 2px; }
+    .in-stock-note { margin-top: 5px; color: #758091; font-size: 10px; }
+    .recent-review { margin-top: 8px; padding-top: 7px; border-top: 1px solid #eceef1; color: #616a77; font-size: 10px; line-height: 1.55; }
     .recent-review strong { color: #343c48; font-weight: 600; }
     .order-hub-button { display: flex !important; align-items: center; justify-content: space-between; gap: 10px; }
     .pending-badge { display: inline-grid; min-width: 18px; height: 18px; place-items: center; padding: 0 5px; border-radius: 20px; background: #344359; color: white; font-size: 9px; }
@@ -432,6 +445,7 @@
     .order-meta { margin: 0; color: #7c8490; font-size: 9px; line-height: 1.6; }
     .order-status { display: inline-flex; align-items: center; min-height: 23px; padding: 3px 8px; border: 1px solid #dfe4eb; border-radius: 20px; background: #f4f6f9; color: #4c5e77; font-size: 8px; white-space: nowrap; }
     .order-status.pending { border-color: #f0dfbd; background: #fcf7ed; color: #94702e; }
+    .order-status.rejected { border-color: #ead2cf; background: #fbf0ef; color: #a3443e; }
     .order-details { display: grid; grid-template-columns: 65px 1fr; gap: 10px; margin-top: 10px; }
     .order-details img { width: 65px; height: 72px; border-radius: 6px; object-fit: cover; background: #eef0f3; }
     .order-info { display: grid; align-content: center; gap: 5px; color: #596372; font-size: 9px; line-height: 1.5; }
@@ -439,6 +453,9 @@
     .order-accept label { display: grid; flex: 1; gap: 5px; color: #687281; font-size: 9px; }
     .order-accept input { min-height: 34px; padding: 6px 8px; border: 1px solid #e0e4ea; border-radius: 6px; background: white; color: #333b47; font-size: 10px; }
     .order-accept button { min-height: 34px; padding: 0 12px; border: 0; border-radius: 6px; background: #263447; color: white; font-size: 9px; cursor: pointer; }
+    .order-accept button:disabled { opacity: .55; cursor: wait; }
+    .order-accept .order-reject { border: 1px solid #ead2cf; background: #fff; color: #a3443e; }
+    .order-accept .order-reject:hover { background: #fbf0ef; }
     .order-empty { padding: 25px 14px; border: 1px dashed #d8dde5; border-radius: 9px; color: #7c8491; font-size: 10px; text-align: center; }
     .order-empty-card h3 { margin: 0 0 8px; color: #303844; font-size: 12px; }
     .order-empty-card p { margin: 0; color: #7c8491; font-size: 10px; line-height: 1.6; }
@@ -564,6 +581,10 @@
         <svg viewBox="0 0 24 24"><path d="M5.5 8.5h13l1 12h-15l1-12Z"/><path d="M9 9V6a3 3 0 0 1 6 0v3"/></svg>
         <span class="cart-count" id="cartCount">0</span>
       </button>
+      <button class="nav-mailbox" id="headerMailboxButton" type="button" aria-label="Open seller mailbox" hidden>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></svg>
+        <span>Mailbox</span><span class="pending-badge" id="headerPendingOrderCount">0</span>
+      </button>
       <button class="nav-sign-in" id="navSignInButton" type="button">Sign in with Google</button>
       <button class="profile-action" id="profileButton" aria-label="Open your profile" aria-expanded="false" hidden></button>
     </div>
@@ -571,8 +592,8 @@
   <div class="profile-menu" id="profileMenu">
     <div class="profile-summary" id="profileSummary"></div>
     <p class="profile-role" id="profileRole"></p>
+    <p class="profile-listing-count" id="profileListingCount" hidden></p>
     <button class="order-hub-button" id="yourProductsButton" type="button" hidden>Your products</button>
-    <button class="order-hub-button" id="sellerOrdersButton" type="button" hidden>Mailbox / Orders Hub <span class="pending-badge" id="pendingOrderCount">0</span></button>
     <button class="order-hub-button" id="buyerOrdersButton" type="button" hidden>Your Orders</button>
     <button class="sign-out-button" id="signOutButton" type="button">Sign out</button>
   </div>
@@ -849,13 +870,18 @@
       const orderDeliveryDate = order.deliveryDate || order.expectedDeliveryDate;
       const dateLabel = orderDeliveryDate
         ? `Expected delivery: ${formatOrderDate(orderDeliveryDate)}`
-        : "Delivery date will be shared by the seller.";
+        : order.status === "Rejected by Seller"
+          ? "This order was rejected by the seller."
+          : "Delivery date will be shared by the seller.";
       const createdLabel = formatOrderDate(order.createdAt);
-      const statusClass = order.status === "Pending Acceptance" ? "pending" : "";
+      const statusClass = order.status === "Pending Acceptance"
+        ? "pending"
+        : order.status === "Rejected by Seller" ? "rejected" : "";
       const acceptance = seller && order.status === "Pending Acceptance" ? `
         <form class="order-accept" data-accept-order="${escapeHtml(order.id)}">
           <label>Expected delivery date<input type="date" name="deliveryDate" min="${getTodayDate()}" required></label>
           <button type="submit">Accept Order</button>
+          <button class="order-reject" type="button" data-reject-order="${escapeHtml(order.id)}">Reject Order</button>
         </form>
       ` : "";
       return `
@@ -888,7 +914,7 @@
 
     function renderSellerOrders() {
       const pendingCount = sellerOrders.filter(order => order.status === "Pending Acceptance").length;
-      const badge = document.getElementById("pendingOrderCount");
+      const badge = document.getElementById("headerPendingOrderCount");
       if (badge) badge.textContent = pendingCount;
       const list = document.getElementById("sellerOrderList");
       if (!list) return;
@@ -1126,7 +1152,6 @@
 
     function openSellerMailbox() {
       if (!currentUser || !roleCanSell() || !document.getElementById("mailboxBackdrop")) return;
-      document.getElementById("profileMenu").classList.remove("open");
       renderSellerOrders();
       openDialog("mailboxBackdrop");
     }
@@ -1164,6 +1189,45 @@
       } catch (error) {
         console.error("SHOPX seller order acceptance failed:", error);
         showToast(`Order could not be accepted: ${error.message}`);
+      } finally {
+        button.disabled = false;
+      }
+    }
+
+    async function rejectSellerOrder(event) {
+      const button = event.target.closest("[data-reject-order]");
+      if (!button || !currentUser || !roleCanSell()) return;
+      const orderId = button.dataset.rejectOrder;
+      if (!window.confirm("Reject this order? Its status will update for the buyer and the stock will return to your listing.")) return;
+      button.disabled = true;
+      try {
+        await runTransaction(db, async transaction => {
+          const orderRef = doc(db, "orders", orderId);
+          const orderSnapshot = await transaction.get(orderRef);
+          if (!orderSnapshot.exists()) throw new Error("This order no longer exists.");
+          const order = orderSnapshot.data();
+          if (order.sellerId !== currentUser.uid || order.status !== "Pending Acceptance") {
+            throw new Error("This order is no longer waiting for your decision.");
+          }
+
+          const productRef = doc(db, "products", order.productId);
+          const productSnapshot = await transaction.get(productRef);
+          if (productSnapshot.exists() && productSnapshot.data().sellerId === currentUser.uid) {
+            const product = productSnapshot.data();
+            transaction.update(productRef, {
+              stock: Math.min(product.stock + order.quantity, 1000000),
+              updatedAt: serverTimestamp()
+            });
+          }
+          transaction.update(orderRef, {
+            status: "Rejected by Seller",
+            updatedAt: serverTimestamp()
+          });
+        });
+        showToast("Order rejected. The buyer will see the updated status.");
+      } catch (error) {
+        console.error("SHOPX seller order rejection failed:", error);
+        showToast(`Order could not be rejected: ${error.message}`);
       } finally {
         button.disabled = false;
       }
@@ -1290,9 +1354,20 @@
       details.append(name, email, contact);
       summary.append(details);
       document.getElementById("yourProductsButton").hidden = !roleCanSell();
-      document.getElementById("sellerOrdersButton").hidden = !roleCanSell();
+      document.getElementById("headerMailboxButton").hidden = !roleCanSell();
       document.getElementById("buyerOrdersButton").hidden = !roleCanBuy();
       document.getElementById("profileRole").textContent = profile.role === "both" ? "Buyer & seller account" : `${profile.role} account`;
+      renderProfileListingCount();
+    }
+
+    function renderProfileListingCount(message) {
+      const listingCount = document.getElementById("profileListingCount");
+      if (!listingCount) return;
+      listingCount.hidden = !roleCanSell();
+      if (!listingCount.hidden) {
+        const count = sellerListings.length;
+        listingCount.textContent = message || `Your listings: ${count} ${count === 1 ? "product" : "products"}`;
+      }
     }
 
     function renderSellerProducts() {
@@ -1340,6 +1415,7 @@
 
     function activateProfile(profile) {
       userProfile = profile;
+      sellerListings = [];
       document.body.classList.add("signed-in");
       authGate.hidden = true;
       document.getElementById("profileOnboardingFields").hidden = true;
@@ -1371,11 +1447,14 @@
             sellerListings = snapshot.docs.map(mapProductDocument)
               .sort((a, b) => (b.createdAt?.toMillis?.() || 0) - (a.createdAt?.toMillis?.() || 0));
             renderSellerProducts();
+            renderProfileListingCount();
           },
           error => {
             console.error("SHOPX seller listings could not be loaded:", error);
             document.getElementById("sellerProducts").innerHTML =
               `<p class="seller-empty">Your listings could not be loaded: ${escapeHtml(error.message)}</p>`;
+            sellerListings = [];
+            renderProfileListingCount("Your listings could not be loaded.");
             showToast(`Your listings could not be loaded: ${error.message}`);
           }
         );
@@ -1489,11 +1568,13 @@
         document.getElementById("profileButton").replaceChildren();
         document.getElementById("profileSummary").replaceChildren();
         document.getElementById("navSignInButton").hidden = false;
+        document.getElementById("headerMailboxButton").hidden = true;
+        document.getElementById("headerPendingOrderCount").textContent = "0";
         document.getElementById("profileMenu").classList.remove("open");
         document.getElementById("profileButton").setAttribute("aria-expanded", "false");
         document.getElementById("yourProductsButton").hidden = true;
-        document.getElementById("sellerOrdersButton").hidden = true;
         document.getElementById("buyerOrdersButton").hidden = true;
+        document.getElementById("profileListingCount").hidden = true;
         const onboardingName = document.getElementById("onboardingName");
         const onboardingMobile = document.getElementById("onboardingMobile");
         const onboardingAddress = document.getElementById("onboardingAddress");
@@ -2011,9 +2092,10 @@
       document.getElementById("newAddressLabel").focus();
     });
     document.getElementById("saveNewAddress").addEventListener("click", saveCheckoutAddress);
-    document.getElementById("sellerOrdersButton").addEventListener("click", openSellerMailbox);
+    document.getElementById("headerMailboxButton").addEventListener("click", openSellerMailbox);
     document.getElementById("buyerOrdersButton").addEventListener("click", openBuyerOrders);
     document.getElementById("sellerOrderList").addEventListener("submit", acceptSellerOrder);
+    document.getElementById("sellerOrderList").addEventListener("click", rejectSellerOrder);
     document.getElementById("reviewForm").addEventListener("submit", saveReview);
     document.querySelectorAll("[data-close-dialog]").forEach(button => button.addEventListener("click", () => {
       closeDialog(button.closest(".dialog-backdrop"));
