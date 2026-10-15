@@ -234,11 +234,11 @@ service cloud.firestore {
       allow update: if isSeller()
         && resource.data.sellerId == request.auth.uid
         && resource.data.status == 'Pending Acceptance'
-        && request.resource.data.status == 'Accepted & Processing'
+        && request.resource.data.status == 'Confirmed & In Transit'
         && request.resource.data.diff(resource.data).affectedKeys()
-          .hasOnly(['status', 'expectedDeliveryDate', 'updatedAt'])
-        && request.resource.data.expectedDeliveryDate is timestamp
-        && request.resource.data.expectedDeliveryDate >= request.time
+          .hasOnly(['status', 'deliveryDate', 'updatedAt'])
+        && request.resource.data.deliveryDate is timestamp
+        && request.resource.data.deliveryDate >= request.time
         && request.resource.data.updatedAt == request.time;
       allow delete: if false;
     }

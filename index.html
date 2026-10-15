@@ -347,6 +347,8 @@
     .auth-error:empty, .seller-error:empty { display: none; }
     .profile-action { display: grid; width: 30px; height: 30px; place-items: center; overflow: hidden; border: 1px solid rgba(35,44,58,.12); border-radius: 50%; background: #f0f2f5; color: #4d5a6c; font-size: 10px; font-weight: 700; cursor: pointer; }
     .profile-action img { width: 100%; height: 100%; object-fit: cover; }
+    .nav-sign-in { min-height: 32px; padding: 0 12px; border: 1px solid rgba(35,44,58,.16); border-radius: 20px; background: rgba(255,255,255,.65); color: #343b46; font-size: 9px; font-weight: 600; cursor: pointer; }
+    .nav-sign-in:hover { background: #f0f2f5; }
     .profile-menu { position: absolute; z-index: 25; top: calc(100% - 2px); right: 5.5%; display: none; width: min(290px,calc(100vw - 28px)); padding: 17px; border: 1px solid rgba(255,255,255,.9); border-radius: 13px; background: rgba(255,255,255,.92); box-shadow: 0 16px 50px rgba(27,36,50,.14); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
     .profile-menu.open { display: block; }
     .profile-summary { display: flex; align-items: center; gap: 11px; padding-bottom: 13px; border-bottom: 1px solid var(--line); }
@@ -438,6 +440,8 @@
     .order-accept input { min-height: 34px; padding: 6px 8px; border: 1px solid #e0e4ea; border-radius: 6px; background: white; color: #333b47; font-size: 10px; }
     .order-accept button { min-height: 34px; padding: 0 12px; border: 0; border-radius: 6px; background: #263447; color: white; font-size: 9px; cursor: pointer; }
     .order-empty { padding: 25px 14px; border: 1px dashed #d8dde5; border-radius: 9px; color: #7c8491; font-size: 10px; text-align: center; }
+    .order-empty-card h3 { margin: 0 0 8px; color: #303844; font-size: 12px; }
+    .order-empty-card p { margin: 0; color: #7c8491; font-size: 10px; line-height: 1.6; }
     .review-product { display: flex; align-items: center; gap: 11px; margin-bottom: 15px; padding: 10px; border-radius: 8px; background: #f0f2f5; }
     .review-product img { width: 44px; height: 48px; border-radius: 5px; object-fit: cover; }
     .review-product strong { color: #303844; font-size: 10px; }
@@ -476,65 +480,16 @@
         <h1 id="authHeading">Welcome to SHOPX</h1>
         <p>Sign in to discover products, or create your seller profile and list your first product.</p>
       </div>
-      <div class="dialog-backdrop" id="checkoutBackdrop" aria-hidden="true">
-        <section class="dialog-card" role="dialog" aria-modal="true" aria-labelledby="checkoutHeading">
-          <div class="dialog-heading"><div><h2 id="checkoutHeading">Cash on delivery</h2><p class="dialog-subtitle">Choose where to deliver your SHOPX order.</p></div><button class="icon-button" type="button" data-close-dialog aria-label="Close checkout"><svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
-          <form id="checkoutForm" class="checkout-form">
-            <p class="seller-field"><span>Saved delivery addresses</span></p>
-            <div class="address-options" id="checkoutAddresses"></div>
-            <button class="add-address-toggle" id="showAddAddress" type="button">+ Add New Address</button>
-            <div id="newAddressFields" hidden>
-              <label class="seller-field"><span>Address label</span><input id="newAddressLabel" maxlength="30" placeholder="Home, Work, etc."></label>
-              <label class="seller-field"><span>Full address</span><textarea id="newAddressText" maxlength="300" placeholder="House / street, city, state, PIN code"></textarea></label>
-              <button class="add-address-toggle" id="saveNewAddress" type="button">Save address & select it</button>
-            </div>
-            <div class="cod-note"><span aria-hidden="true">▣</span><span>Cash on Delivery — pay in cash when your order arrives.</span></div>
-            <p class="seller-error" id="checkoutError" role="alert"></p>
-            <button class="button dialog-primary" id="placeOrderButton" type="submit">Place COD order</button>
-          </form>
-        </section>
-      </div>
-      <div class="dialog-backdrop" id="ordersBackdrop" aria-hidden="true">
-        <section class="dialog-card" role="dialog" aria-modal="true" aria-labelledby="ordersHeading">
-          <div class="dialog-heading"><div><h2 id="ordersHeading">Your Orders</h2><p class="dialog-subtitle" id="ordersSubtitle">Track your SHOPX deliveries.</p></div><button class="icon-button" type="button" data-close-dialog aria-label="Close orders"><svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
-          <div class="order-list" id="buyerOrderList"></div>
-        </section>
-      </div>
-      <div class="dialog-backdrop" id="mailboxBackdrop" aria-hidden="true">
-        <section class="dialog-card" role="dialog" aria-modal="true" aria-labelledby="mailboxHeading">
-          <div class="dialog-heading"><div><h2 id="mailboxHeading">Mailbox / Orders Hub</h2><p class="dialog-subtitle">Review orders for your products and set an expected delivery date.</p></div><button class="icon-button" type="button" data-close-dialog aria-label="Close mailbox"><svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
-          <div class="order-list" id="sellerOrderList"></div>
-        </section>
-      </div>
-      <div class="dialog-backdrop" id="reviewBackdrop" aria-hidden="true">
-        <section class="dialog-card" role="dialog" aria-modal="true" aria-labelledby="reviewHeading">
-          <div class="dialog-heading"><div><h2 id="reviewHeading">Rate this product</h2><p class="dialog-subtitle">Share an honest note with the SHOPX community.</p></div><button class="icon-button" type="button" data-close-dialog aria-label="Close review"><svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
-          <div class="review-product" id="reviewProduct"></div>
-          <form class="review-form" id="reviewForm">
-            <span class="role-title">Your rating</span>
-            <div class="rating-options" role="radiogroup" aria-label="Choose a rating from 1 to 5 stars">
-              <label><input type="radio" name="rating" value="1" required><span>★</span></label>
-              <label><input type="radio" name="rating" value="2" required><span>★</span></label>
-              <label><input type="radio" name="rating" value="3" required><span>★</span></label>
-              <label><input type="radio" name="rating" value="4" required><span>★</span></label>
-              <label><input type="radio" name="rating" value="5" required><span>★</span></label>
-            </div>
-            <label class="seller-field"><span>Your review</span><textarea name="review" minlength="3" maxlength="500" required placeholder="What should other shoppers know?"></textarea></label>
-            <p class="seller-error" id="reviewError" role="alert"></p>
-            <button class="button dialog-primary" id="submitReviewButton" type="submit">Publish review</button>
-          </form>
-        </section>
-      </div>
       <form id="authForm">
         <div id="profileOnboardingFields" hidden>
-          <label class="auth-field"><span>Your name</span><input id="profileName" name="name" type="text" autocomplete="name" maxlength="80" placeholder="Enter your full name"></label>
-          <label class="auth-field"><span>Mobile number</span><input id="profilePhone" name="phone" type="tel" autocomplete="tel" inputmode="tel" maxlength="20" placeholder="+91 98765 43210"></label>
-          <label class="auth-field"><span>Default address</span><textarea id="profileAddress" name="address" autocomplete="street-address" maxlength="300" placeholder="House / street, city, state, PIN code"></textarea></label>
+          <label class="auth-field"><span>Your name</span><input id="onboardingName" name="name" type="text" autocomplete="name" maxlength="80" placeholder="Enter your full name"></label>
+          <label class="auth-field"><span>Mobile number</span><input id="onboardingMobile" name="phone" type="tel" autocomplete="tel" inputmode="tel" maxlength="20" placeholder="+91 98765 43210"></label>
+          <label class="auth-field"><span>Default address</span><textarea id="onboardingAddress" name="address" autocomplete="street-address" maxlength="300" placeholder="House / street, city, state, PIN code"></textarea></label>
           <span class="role-title">How will you use SHOPX?</span>
           <div class="role-options">
-            <label class="role-option"><input type="radio" name="role" value="buyer"><span>I'm a buyer<small>Browse and shop products</small></span></label>
-            <label class="role-option"><input type="radio" name="role" value="seller"><span>I'm a seller<small>List and manage my products</small></span></label>
-            <label class="role-option"><input type="radio" name="role" value="both"><span>Both<small>Shop and sell on SHOPX</small></span></label>
+            <label class="role-option" data-role="buyer"><input type="radio" name="role" value="buyer"><span>I'm a buyer<small>Browse and shop products</small></span></label>
+            <label class="role-option" data-role="seller"><input type="radio" name="role" value="seller"><span>I'm a seller<small>List and manage my products</small></span></label>
+            <label class="role-option" data-role="both"><input type="radio" name="role" value="both" checked><span>Both<small>Shop and sell on SHOPX</small></span></label>
           </div>
         </div>
         <button class="google-button" id="googleSignInButton" type="submit"><span class="google-mark" aria-hidden="true">G</span><span id="googleButtonText">Sign in with Google</span></button>
@@ -543,6 +498,55 @@
       </form>
     </div>
   </section>
+  <div class="dialog-backdrop" id="checkoutBackdrop" aria-hidden="true">
+    <section class="dialog-card" role="dialog" aria-modal="true" aria-labelledby="checkoutHeading">
+      <div class="dialog-heading"><div><h2 id="checkoutHeading">Cash on delivery</h2><p class="dialog-subtitle">Choose where to deliver your SHOPX order.</p></div><button class="icon-button" type="button" data-close-dialog aria-label="Close checkout"><svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
+      <form id="checkoutForm" class="checkout-form">
+        <p class="seller-field"><span>Saved delivery addresses</span></p>
+        <div class="address-options" id="checkoutAddresses"></div>
+        <button class="add-address-toggle" id="showAddAddress" type="button">+ Add New Address</button>
+        <div id="newAddressFields" hidden>
+          <label class="seller-field"><span>Address label</span><input id="newAddressLabel" maxlength="30" placeholder="Home, Work, etc."></label>
+          <label class="seller-field"><span>Full address</span><textarea id="newAddressText" maxlength="300" placeholder="House / street, city, state, PIN code"></textarea></label>
+          <button class="add-address-toggle" id="saveNewAddress" type="button">Save address & select it</button>
+        </div>
+        <div class="cod-note"><span aria-hidden="true">▣</span><span>Cash on Delivery — pay in cash when your order arrives.</span></div>
+        <p class="seller-error" id="checkoutError" role="alert"></p>
+        <button class="button dialog-primary" id="placeOrderButton" type="submit">Place COD order</button>
+      </form>
+    </section>
+  </div>
+  <div class="dialog-backdrop" id="ordersBackdrop" aria-hidden="true">
+    <section class="dialog-card" role="dialog" aria-modal="true" aria-labelledby="ordersHeading">
+      <div class="dialog-heading"><div><h2 id="ordersHeading">Your Orders</h2><p class="dialog-subtitle" id="ordersSubtitle">Track your SHOPX deliveries.</p></div><button class="icon-button" type="button" data-close-dialog aria-label="Close orders"><svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
+      <div class="order-list" id="buyerOrderList"></div>
+    </section>
+  </div>
+  <div class="dialog-backdrop" id="mailboxBackdrop" aria-hidden="true">
+    <section class="dialog-card" role="dialog" aria-modal="true" aria-labelledby="mailboxHeading">
+      <div class="dialog-heading"><div><h2 id="mailboxHeading">📬 Seller Mailbox</h2><p class="dialog-subtitle">Review orders for your products and set an expected delivery date.</p></div><button class="icon-button" type="button" data-close-dialog aria-label="Close mailbox">✕</button></div>
+      <div class="order-list" id="sellerOrderList"></div>
+    </section>
+  </div>
+  <div class="dialog-backdrop" id="reviewBackdrop" aria-hidden="true">
+    <section class="dialog-card" role="dialog" aria-modal="true" aria-labelledby="reviewHeading">
+      <div class="dialog-heading"><div><h2 id="reviewHeading">Rate this product</h2><p class="dialog-subtitle">Share an honest note with the SHOPX community.</p></div><button class="icon-button" type="button" data-close-dialog aria-label="Close review"><svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
+      <div class="review-product" id="reviewProduct"></div>
+      <form class="review-form" id="reviewForm">
+        <span class="role-title">Your rating</span>
+        <div class="rating-options" role="radiogroup" aria-label="Choose a rating from 1 to 5 stars">
+          <label><input type="radio" name="rating" value="1" required><span>★</span></label>
+          <label><input type="radio" name="rating" value="2" required><span>★</span></label>
+          <label><input type="radio" name="rating" value="3" required><span>★</span></label>
+          <label><input type="radio" name="rating" value="4" required><span>★</span></label>
+          <label><input type="radio" name="rating" value="5" required><span>★</span></label>
+        </div>
+        <label class="seller-field"><span>Your review</span><textarea name="review" minlength="3" maxlength="500" required placeholder="What should other shoppers know?"></textarea></label>
+        <p class="seller-error" id="reviewError" role="alert"></p>
+        <button class="button dialog-primary" id="submitReviewButton" type="submit">Publish review</button>
+      </form>
+    </section>
+  </div>
   <div class="announcement"><span>Free shipping on your first order &nbsp;·&nbsp; Use code SHOPX10</span></div>
   <header class="site-header">
     <button class="icon-button menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false">
@@ -560,7 +564,8 @@
         <svg viewBox="0 0 24 24"><path d="M5.5 8.5h13l1 12h-15l1-12Z"/><path d="M9 9V6a3 3 0 0 1 6 0v3"/></svg>
         <span class="cart-count" id="cartCount">0</span>
       </button>
-      <button class="profile-action" id="profileButton" aria-label="Open your profile" aria-expanded="false"></button>
+      <button class="nav-sign-in" id="navSignInButton" type="button">Sign in with Google</button>
+      <button class="profile-action" id="profileButton" aria-label="Open your profile" aria-expanded="false" hidden></button>
     </div>
   </header>
   <div class="profile-menu" id="profileMenu">
@@ -737,6 +742,7 @@
     const sellerBackdrop = document.getElementById("sellerBackdrop");
     let currentUser = null;
     let userProfile = null;
+    let selectedRole = "both";
     let unsubscribeProducts = null;
     let unsubscribeSellerProducts = null;
     let unsubscribeBuyerOrders = null;
@@ -840,15 +846,16 @@
     }
 
     function renderOrderCard(order, { seller = false } = {}) {
-      const dateLabel = order.expectedDeliveryDate
-        ? `Expected delivery: ${formatOrderDate(order.expectedDeliveryDate)}`
+      const orderDeliveryDate = order.deliveryDate || order.expectedDeliveryDate;
+      const dateLabel = orderDeliveryDate
+        ? `Expected delivery: ${formatOrderDate(orderDeliveryDate)}`
         : "Delivery date will be shared by the seller.";
       const createdLabel = formatOrderDate(order.createdAt);
       const statusClass = order.status === "Pending Acceptance" ? "pending" : "";
       const acceptance = seller && order.status === "Pending Acceptance" ? `
         <form class="order-accept" data-accept-order="${escapeHtml(order.id)}">
           <label>Expected delivery date<input type="date" name="deliveryDate" min="${getTodayDate()}" required></label>
-          <button type="submit">Accept order</button>
+          <button type="submit">Accept Order</button>
         </form>
       ` : "";
       return `
@@ -872,22 +879,25 @@
 
     function renderBuyerOrders() {
       const list = document.getElementById("buyerOrderList");
+      if (!list) return;
       const sorted = [...buyerOrders].sort((a, b) => (b.createdAt?.toMillis?.() || 0) - (a.createdAt?.toMillis?.() || 0));
       list.innerHTML = sorted.length
         ? sorted.map(order => renderOrderCard(order)).join("")
-        : '<p class="order-empty">📦 No orders placed yet. Start browsing products to place an order!</p>';
+        : '<article class="order-card order-empty-card"><h3>📦 Your Orders</h3><p>You have not placed any orders yet. Browse products and place a Cash on Delivery order to see it here.</p></article>';
     }
 
     function renderSellerOrders() {
       const pendingCount = sellerOrders.filter(order => order.status === "Pending Acceptance").length;
-      document.getElementById("pendingOrderCount").textContent = pendingCount;
+      const badge = document.getElementById("pendingOrderCount");
+      if (badge) badge.textContent = pendingCount;
       const list = document.getElementById("sellerOrderList");
+      if (!list) return;
       const sorted = [...sellerOrders].sort((a, b) => (b.createdAt?.toMillis?.() || 0) - (a.createdAt?.toMillis?.() || 0));
       const pending = sorted.filter(order => order.status === "Pending Acceptance");
       const processed = sorted.filter(order => order.status !== "Pending Acceptance");
       list.innerHTML = `${pending.length
         ? pending.map(order => renderOrderCard(order, { seller: true })).join("")
-        : '<p class="order-empty">📬 No customer orders yet. When a buyer places an order, it will appear here for your approval.</p>'}${processed.map(order => renderOrderCard(order, { seller: true })).join("")}`;
+        : '<article class="order-card order-empty-card"><h3>📬 Seller Mailbox</h3><p>No incoming customer orders yet. When a buyer places an order, it will appear here for you to accept and set a delivery date.</p></article>'}${processed.map(order => renderOrderCard(order, { seller: true })).join("")}`;
     }
 
     function subscribeToOrders() {
@@ -897,23 +907,50 @@
       sellerOrders.splice(0);
       renderBuyerOrders();
       renderSellerOrders();
-      if (roleCanBuy()) {
-        unsubscribeBuyerOrders = onSnapshot(query(collection(db, "orders"), where("buyerId", "==", currentUser.uid)), snapshot => {
-          buyerOrders.splice(0, buyerOrders.length, ...snapshot.docs.map(orderDoc => ({ id: orderDoc.id, ...orderDoc.data() })));
-          renderBuyerOrders();
-        }, error => {
-          console.error("SHOPX buyer orders could not be loaded:", error);
-          showToast(`Your orders could not be loaded: ${error.message}`);
-        });
-      }
-      if (roleCanSell()) {
-        unsubscribeSellerOrders = onSnapshot(query(collection(db, "orders"), where("sellerId", "==", currentUser.uid)), snapshot => {
-          sellerOrders.splice(0, sellerOrders.length, ...snapshot.docs.map(orderDoc => ({ id: orderDoc.id, ...orderDoc.data() })));
-          renderSellerOrders();
-        }, error => {
-          console.error("SHOPX seller orders could not be loaded:", error);
-          showToast(`Seller orders could not be loaded: ${error.message}`);
-        });
+      try {
+        if (roleCanBuy()) {
+          unsubscribeBuyerOrders = onSnapshot(
+            query(collection(db, "orders"), where("buyerId", "==", currentUser.uid)),
+            snapshot => {
+              if (snapshot.empty) {
+                buyerOrders.splice(0);
+                renderBuyerOrders();
+                return;
+              }
+              buyerOrders.splice(0, buyerOrders.length, ...snapshot.docs.map(orderDoc => ({ id: orderDoc.id, ...orderDoc.data() })));
+              renderBuyerOrders();
+            },
+            error => {
+              console.error("SHOPX buyer orders could not be loaded:", error);
+              const list = document.getElementById("buyerOrderList");
+              if (list) list.innerHTML = `<p class="order-empty">Your orders could not be loaded: ${escapeHtml(error.message)}</p>`;
+              showToast(`Your orders could not be loaded: ${error.message}`);
+            }
+          );
+        }
+        if (roleCanSell()) {
+          unsubscribeSellerOrders = onSnapshot(
+            query(collection(db, "orders"), where("sellerId", "==", currentUser.uid)),
+            snapshot => {
+              if (snapshot.empty) {
+                sellerOrders.splice(0);
+                renderSellerOrders();
+                return;
+              }
+              sellerOrders.splice(0, sellerOrders.length, ...snapshot.docs.map(orderDoc => ({ id: orderDoc.id, ...orderDoc.data() })));
+              renderSellerOrders();
+            },
+            error => {
+              console.error("SHOPX seller orders could not be loaded:", error);
+              const list = document.getElementById("sellerOrderList");
+              if (list) list.innerHTML = `<p class="order-empty">Mailbox orders could not be loaded: ${escapeHtml(error.message)}</p>`;
+              showToast(`Seller orders could not be loaded: ${error.message}`);
+            }
+          );
+        }
+      } catch (error) {
+        console.error("SHOPX order subscriptions could not be started:", error);
+        showToast(`Order hubs could not be loaded: ${error.message}`);
       }
     }
 
@@ -1115,10 +1152,11 @@
           if (order.sellerId !== currentUser.uid || order.status !== "Pending Acceptance") {
             throw new Error("This order is no longer waiting for your acceptance.");
           }
-          const deliveryDate = new Date(`${dateValue}T23:59:59`);
+          const [year, month, day] = dateValue.split("-").map(Number);
+          const deliveryDate = new Date(year, month - 1, day, 23, 59, 59);
           transaction.update(orderRef, {
-            status: "Accepted & Processing",
-            expectedDeliveryDate: Timestamp.fromDate(deliveryDate),
+            status: "Confirmed & In Transit",
+            deliveryDate: Timestamp.fromDate(deliveryDate),
             updatedAt: serverTimestamp()
           });
         });
@@ -1204,7 +1242,8 @@
     }
 
     function setAuthError(message) {
-      document.getElementById("authError").textContent = message;
+      const errorElement = document.getElementById("authError");
+      if (errorElement) errorElement.textContent = message;
     }
 
     function setSellerError(message) {
@@ -1219,6 +1258,8 @@
     function renderProfile(profile) {
       const button = document.getElementById("profileButton");
       const summary = document.getElementById("profileSummary");
+      button.hidden = false;
+      document.getElementById("navSignInButton").hidden = true;
       button.replaceChildren();
       summary.replaceChildren();
 
@@ -1348,10 +1389,14 @@
     document.getElementById("authForm").addEventListener("submit", async event => {
       event.preventDefault();
       setAuthError("");
+      const name = document.getElementById("onboardingName")?.value?.trim() || currentUser?.displayName || "User";
+      const phone = document.getElementById("onboardingMobile")?.value?.trim() || "";
+      const address = document.getElementById("onboardingAddress")?.value?.trim() || "";
+      const role = selectedRole || "both";
       const button = document.getElementById("googleSignInButton");
       const buttonText = document.getElementById("googleButtonText");
-      button.disabled = true;
-      buttonText.textContent = currentUser ? "Saving your profile…" : "Signing in with Google…";
+      if (button) button.disabled = true;
+      if (buttonText) buttonText.textContent = currentUser ? "Saving your profile…" : "Signing in with Google…";
       try {
         if (!currentUser) {
           await signInWithPopup(auth, googleProvider);
@@ -1365,12 +1410,10 @@
           return;
         }
 
-        const form = event.currentTarget;
-        const role = form.querySelector('input[name="role"]:checked')?.value;
         const profile = {
-          name: document.getElementById("profileName").value.trim(),
-          phone: document.getElementById("profilePhone").value.trim(),
-          address: document.getElementById("profileAddress").value.trim(),
+          name,
+          phone,
+          address,
           role
         };
         if (!["buyer", "seller", "both"].includes(role) || !profile.name || profile.name.length > 80 ||
@@ -1409,16 +1452,19 @@
         console.error("SHOPX sign-in/profile setup failed:", error);
         setAuthError(`Sign-in or profile setup failed: ${error.message}`);
       } finally {
-        button.disabled = false;
-        buttonText.textContent = currentUser
-          ? (userProfile ? "Signed in with Google" : "Create profile & continue")
-          : "Sign in with Google";
+        if (button) button.disabled = false;
+        if (buttonText) {
+          buttonText.textContent = currentUser
+            ? (userProfile ? "Signed in with Google" : "Create profile & continue")
+            : "Sign in with Google";
+        }
       }
     });
 
     setPersistence(auth, browserLocalPersistence).then(() => onAuthStateChanged(auth, async user => {
       currentUser = user;
       if (!user) {
+        closeAllTransientUI();
         userProfile = null;
         products = [];
         sellerListings = [];
@@ -1439,18 +1485,32 @@
         document.body.classList.remove("signed-in");
         authGate.hidden = false;
         document.getElementById("profileOnboardingFields").hidden = true;
+        document.getElementById("profileButton").hidden = true;
+        document.getElementById("profileButton").replaceChildren();
+        document.getElementById("profileSummary").replaceChildren();
+        document.getElementById("navSignInButton").hidden = false;
+        document.getElementById("profileMenu").classList.remove("open");
+        document.getElementById("profileButton").setAttribute("aria-expanded", "false");
         document.getElementById("yourProductsButton").hidden = true;
         document.getElementById("sellerOrdersButton").hidden = true;
         document.getElementById("buyerOrdersButton").hidden = true;
-        document.getElementById("profileName").value = "";
-        document.getElementById("profilePhone").value = "";
-        document.getElementById("profileAddress").value = "";
-        document.querySelectorAll('input[name="role"]').forEach(input => { input.checked = false; });
+        const onboardingName = document.getElementById("onboardingName");
+        const onboardingMobile = document.getElementById("onboardingMobile");
+        const onboardingAddress = document.getElementById("onboardingAddress");
+        if (onboardingName) onboardingName.value = "";
+        if (onboardingMobile) onboardingMobile.value = "";
+        if (onboardingAddress) onboardingAddress.value = "";
+        selectedRole = "both";
+        document.querySelectorAll('input[name="role"]').forEach(input => { input.checked = input.value === selectedRole; });
         document.getElementById("googleButtonText").textContent = "Sign in with Google";
         setAuthError("");
         renderCart();
+        renderProducts("All", "");
+        updateSearchResults("");
         return;
       }
+      document.getElementById("navSignInButton").hidden = true;
+      document.getElementById("profileButton").hidden = true;
       try {
         const profileSnapshot = await getDoc(doc(db, "users", user.uid));
         if (profileSnapshot.exists()) {
@@ -1459,18 +1519,20 @@
           return;
         }
         const onboardingFields = document.getElementById("profileOnboardingFields");
-        onboardingFields.hidden = false;
-        const nameInput = document.getElementById("profileName");
-        if (!nameInput.value.trim() && user.displayName) nameInput.value = user.displayName;
+        if (onboardingFields) onboardingFields.hidden = false;
+        const nameInput = document.getElementById("onboardingName");
+        if (nameInput && !nameInput.value.trim() && user.displayName) nameInput.value = user.displayName;
         const legacySnapshot = await getDoc(doc(db, "profiles", user.uid));
         if (legacySnapshot.exists()) {
           const legacy = legacySnapshot.data();
-          if (!nameInput.value.trim() && legacy.name) nameInput.value = legacy.name;
-          if (!document.getElementById("profilePhone").value.trim() && legacy.phone) {
-            document.getElementById("profilePhone").value = legacy.phone;
+          if (nameInput && !nameInput.value.trim() && legacy.name) nameInput.value = legacy.name;
+          const mobileInput = document.getElementById("onboardingMobile");
+          const addressInput = document.getElementById("onboardingAddress");
+          if (mobileInput && !mobileInput.value.trim() && legacy.phone) {
+            mobileInput.value = legacy.phone;
           }
-          if (!document.getElementById("profileAddress").value.trim() && legacy.address) {
-            document.getElementById("profileAddress").value = legacy.address;
+          if (addressInput && !addressInput.value.trim() && legacy.address) {
+            addressInput.value = legacy.address;
           }
         }
         showAuthGate("");
@@ -1487,6 +1549,19 @@
       showAuthGate(`Authentication could not start: ${error.message}`);
     });
 
+    document.querySelectorAll(".role-option").forEach(card => {
+      card.addEventListener("click", () => {
+        if (["buyer", "seller", "both"].includes(card.dataset.role)) selectedRole = card.dataset.role;
+      });
+    });
+    document.querySelectorAll('input[name="role"]').forEach(input => {
+      input.addEventListener("change", event => {
+        if (["buyer", "seller", "both"].includes(event.currentTarget.value)) {
+          selectedRole = event.currentTarget.value;
+        }
+      });
+    });
+
     document.getElementById("profileButton").addEventListener("click", event => {
       const menu = document.getElementById("profileMenu");
       const isOpen = menu.classList.toggle("open");
@@ -1498,14 +1573,30 @@
       document.getElementById("profileButton").setAttribute("aria-expanded", "false");
     });
     document.getElementById("signOutButton").addEventListener("click", async () => {
+      closeAllTransientUI();
       try {
         await signOut(auth);
-        document.getElementById("profileMenu").classList.remove("open");
       } catch (error) {
         console.error("SHOPX sign-out failed:", error);
         showToast(`Could not sign out: ${error.message}`);
       }
     });
+
+    document.getElementById("navSignInButton").addEventListener("click", () => {
+      document.getElementById("authForm").requestSubmit();
+    });
+
+    function closeAllTransientUI() {
+      document.querySelectorAll(".dialog-backdrop.open").forEach(closeDialog);
+      closeCart();
+      closeSearch(false);
+      closeSellerStudio();
+      document.getElementById("profileMenu").classList.remove("open");
+      document.getElementById("profileButton").setAttribute("aria-expanded", "false");
+      document.getElementById("menuToggle").setAttribute("aria-expanded", "false");
+      document.getElementById("navLinks").classList.remove("open");
+      document.body.classList.remove("locked");
+    }
 
     function openSellerStudio() {
       if (!roleCanSell()) return;
