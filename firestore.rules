@@ -1,0 +1,242 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return signedIn() && request.auth.uid == userId;
+    }
+
+    function isSeller() {
+      return signedIn()
+        && exists(/databases/$(database)/documents/users/$(request.auth.uid))
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role in ['seller', 'both'];
+    }
+
+    function isBuyer() {
+      return signedIn()
+        && exists(/databases/$(database)/documents/users/$(request.auth.uid))
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role in ['buyer', 'both'];
+    }
+
+    function validUser(data) {
+      return data.keys().hasAll([
+          'role', 'name', 'phone', 'addresses', 'email', 'photoURL', 'createdAt', 'updatedAt'
+        ])
+        && data.keys().hasOnly([
+          'role', 'name', 'phone', 'addresses', 'email', 'photoURL', 'createdAt', 'updatedAt'
+        ])
+        && data.role in ['buyer', 'seller', 'both']
+        && data.name is string
+        && data.name.size() > 0
+        && data.name.size() <= 80
+        && data.phone is string
+        && data.phone.size() >= 7
+        && data.phone.size() <= 20
+        && data.addresses is list
+        && data.addresses.size() >= 1
+        && data.addresses.size() <= 20
+        && data.email is string
+        && data.email.size() <= 254
+        && data.photoURL is string
+        && data.photoURL.size() <= 2000
+        && data.createdAt is timestamp
+        && data.updatedAt is timestamp;
+    }
+
+    function validProduct(data) {
+      return data.keys().hasAll([
+          'name', 'description', 'category', 'price', 'stock', 'imageUrl', 'imagePath',
+          'sellerId', 'createdAt', 'updatedAt'
+        ])
+        && data.keys().hasOnly([
+          'name', 'description', 'category', 'price', 'stock', 'imageUrl', 'imagePath',
+          'sellerId', 'createdAt', 'updatedAt'
+        ])
+        && data.name is string
+        && data.name.size() > 0
+        && data.name.size() <= 80
+        && data.description is string
+        && data.description.size() > 0
+        && data.description.size() <= 240
+        && data.category in ['Fashion', 'Tech', 'Accessories', 'Beauty']
+        && data.price is int
+        && data.price >= 1
+        && data.price <= 10000000
+        && data.stock is int
+        && data.stock >= 0
+        && data.stock <= 1000000
+        && data.imageUrl is string
+        && data.imageUrl.matches('https://firebasestorage.googleapis.com/.*')
+        && data.imagePath is string
+        && data.imagePath.matches('product-images/' + request.auth.uid + '/[^/]+')
+        && data.sellerId == request.auth.uid
+        && data.createdAt is timestamp
+        && data.updatedAt is timestamp;
+    }
+
+    function validOrderAddress(address, user) {
+      return address is map
+        && address.keys().hasOnly(['id', 'label', 'text'])
+        && address.id is string
+        && address.label is string
+        && address.text is string
+        && user.addresses.hasAny([address]);
+    }
+
+    function validOrderCreate(orderId) {
+      let order = request.resource.data;
+      let productPath = /databases/$(database)/documents/products/$(order.productId);
+      let product = get(productPath).data;
+      let productAfter = getAfter(productPath).data;
+      let user = get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+      return isBuyer()
+        && order.keys().hasAll([
+          'buyerId', 'buyerName', 'buyerPhone', 'sellerId', 'productId', 'productName',
+          'imageUrl', 'quantity', 'unitPrice', 'totalPrice', 'deliveryAddress',
+          'paymentMethod', 'status', 'expectedDeliveryDate', 'createdAt', 'updatedAt'
+        ])
+        && order.keys().hasOnly([
+          'buyerId', 'buyerName', 'buyerPhone', 'sellerId', 'productId', 'productName',
+          'imageUrl', 'quantity', 'unitPrice', 'totalPrice', 'deliveryAddress',
+          'paymentMethod', 'status', 'expectedDeliveryDate', 'createdAt', 'updatedAt'
+        ])
+        && order.buyerId == request.auth.uid
+        && order.buyerName == user.name
+        && order.buyerPhone == user.phone
+        && validOrderAddress(order.deliveryAddress, user)
+        && order.quantity is int
+        && order.quantity >= 1
+        && order.quantity <= 1000000
+        && order.unitPrice == product.price
+        && order.totalPrice == order.unitPrice * order.quantity
+        && order.sellerId == product.sellerId
+        && order.productName == product.name
+        && order.imageUrl == product.imageUrl
+        && product.stock >= order.quantity
+        && productAfter.stock == product.stock - order.quantity
+        && productAfter.lastOrderId == orderId
+        && order.paymentMethod == 'Cash on Delivery'
+        && order.status == 'Pending Acceptance'
+        && order.expectedDeliveryDate == null
+        && order.createdAt == request.time
+        && order.updatedAt == request.time;
+    }
+
+    function validStockDeduction(productId) {
+      let orderId = request.resource.data.lastOrderId;
+      let orderPath = /databases/$(database)/documents/orders/$(orderId);
+      let order = getAfter(orderPath).data;
+      return existsAfter(orderPath)
+        && order.buyerId == request.auth.uid
+        && order.productId == productId
+        && order.sellerId == resource.data.sellerId
+        && order.quantity is int
+        && request.resource.data.stock == resource.data.stock - order.quantity
+        && order.status == 'Pending Acceptance'
+        && order.paymentMethod == 'Cash on Delivery';
+    }
+
+    match /users/{userId} {
+      allow read: if isOwner(userId);
+      allow create: if isOwner(userId)
+        && validUser(request.resource.data)
+        && request.resource.data.createdAt == request.time
+        && request.resource.data.updatedAt == request.time;
+      allow update: if isOwner(userId)
+        && request.resource.data.role == resource.data.role
+        && request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['name', 'phone', 'addresses', 'updatedAt'])
+        && request.resource.data.name is string
+        && request.resource.data.name.size() > 0
+        && request.resource.data.name.size() <= 80
+        && request.resource.data.phone is string
+        && request.resource.data.phone.size() >= 7
+        && request.resource.data.phone.size() <= 20
+        && request.resource.data.addresses is list
+        && request.resource.data.addresses.size() >= 1
+        && request.resource.data.addresses.size() <= 20
+        && request.resource.data.updatedAt == request.time;
+      allow delete: if false;
+    }
+
+    match /profiles/{userId} {
+      allow read: if isOwner(userId);
+      allow write: if false;
+    }
+
+    match /products/{productId} {
+      allow read: if signedIn();
+      allow create: if isSeller()
+        && validProduct(request.resource.data)
+        && request.resource.data.createdAt == request.time
+        && request.resource.data.updatedAt == request.time;
+      allow update: if (
+          isSeller()
+          && resource.data.sellerId == request.auth.uid
+          && request.resource.data.sellerId == resource.data.sellerId
+          && request.resource.data.diff(resource.data).affectedKeys()
+            .hasOnly(['price', 'stock', 'updatedAt'])
+          && request.resource.data.price is int
+          && request.resource.data.price >= 1
+          && request.resource.data.price <= 10000000
+          && request.resource.data.stock is int
+          && request.resource.data.stock >= 0
+          && request.resource.data.stock <= 1000000
+          && request.resource.data.updatedAt == request.time
+        ) || (
+          isBuyer()
+          && request.resource.data.diff(resource.data).affectedKeys()
+            .hasOnly(['stock', 'lastOrderId', 'updatedAt'])
+          && request.resource.data.stock is int
+          && request.resource.data.stock >= 0
+          && request.resource.data.updatedAt == request.time
+          && validStockDeduction(productId)
+        );
+      allow delete: if isSeller() && resource.data.sellerId == request.auth.uid;
+
+      match /reviews/{reviewerId} {
+        allow read: if signedIn();
+        allow create, update: if isOwner(reviewerId)
+          && exists(/databases/$(database)/documents/users/$(request.auth.uid))
+          && request.resource.data.keys().hasAll([
+            'userId', 'reviewerName', 'rating', 'text', 'createdAt', 'updatedAt'
+          ])
+          && request.resource.data.keys().hasOnly([
+            'userId', 'reviewerName', 'rating', 'text', 'createdAt', 'updatedAt'
+          ])
+          && request.resource.data.userId == request.auth.uid
+          && request.resource.data.reviewerName
+            == get(/databases/$(database)/documents/users/$(request.auth.uid)).data.name
+          && request.resource.data.rating is int
+          && request.resource.data.rating >= 1
+          && request.resource.data.rating <= 5
+          && request.resource.data.text is string
+          && request.resource.data.text.size() >= 3
+          && request.resource.data.text.size() <= 500
+          && request.resource.data.createdAt == request.time
+          && request.resource.data.updatedAt == request.time;
+        allow delete: if isOwner(reviewerId);
+      }
+    }
+
+    match /orders/{orderId} {
+      allow read: if signedIn()
+        && (resource.data.buyerId == request.auth.uid || resource.data.sellerId == request.auth.uid);
+      allow create: if validOrderCreate(orderId);
+      allow update: if isSeller()
+        && resource.data.sellerId == request.auth.uid
+        && resource.data.status == 'Pending Acceptance'
+        && request.resource.data.status == 'Accepted & Processing'
+        && request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['status', 'expectedDeliveryDate', 'updatedAt'])
+        && request.resource.data.expectedDeliveryDate is timestamp
+        && request.resource.data.expectedDeliveryDate >= request.time
+        && request.resource.data.updatedAt == request.time;
+      allow delete: if false;
+    }
+  }
+}

@@ -1,0 +1,24 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isSeller(userId) {
+      return signedIn()
+        && request.auth.uid == userId
+        && firestore.exists(/databases/(default)/documents/users/$(userId))
+        && firestore.get(/databases/(default)/documents/users/$(userId)).data.role in ['seller', 'both'];
+    }
+
+    match /product-images/{userId}/{fileName} {
+      allow read: if signedIn();
+      allow create, update: if isSeller(userId)
+        && request.resource.size <= 5 * 1024 * 1024
+        && request.resource.contentType.matches('image/(jpeg|png|webp)');
+      allow delete: if isSeller(userId);
+    }
+  }
+}

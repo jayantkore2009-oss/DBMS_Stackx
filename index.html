@@ -318,9 +318,225 @@
       .search-form input { font-size: 13px; }
       .search-content { padding-right: 15px; padding-left: 15px; }
     }
+    .auth-gate { position: fixed; z-index: 100; inset: 0; display: grid; place-items: center; overflow-y: auto; padding: 28px 18px; background: radial-gradient(ellipse at 12% 10%, rgba(218,226,240,.85), transparent 38%), radial-gradient(ellipse at 90% 90%, rgba(226,231,238,.78), transparent 36%), #f7f8fa; }
+    .auth-card { width: min(480px,100%); padding: 35px; border: 1px solid rgba(255,255,255,.86); border-radius: 22px; background: rgba(255,255,255,.78); box-shadow: 0 24px 90px rgba(29,41,59,.12), inset 0 1px rgba(255,255,255,.96); backdrop-filter: blur(22px); -webkit-backdrop-filter: blur(22px); }
+    .auth-brand { display: inline-flex; margin-bottom: 30px; }
+    .auth-brand .wordmark { font-size: 27px; }
+    .auth-intro { margin-bottom: 24px; }
+    .auth-intro h1 { margin: 0 0 8px; font-family: var(--sans); font-size: 29px; font-weight: 600; letter-spacing: -.045em; }
+    .auth-intro p { margin: 0; color: #717985; font-size: 12px; line-height: 1.7; }
+    .auth-field { display: grid; gap: 7px; margin: 13px 0; }
+    .auth-field > span, .role-title { color: #414954; font-size: 10px; font-weight: 600; }
+    .auth-field input, .auth-field textarea, .seller-field input, .seller-field textarea, .seller-field select { width: 100%; min-height: 43px; padding: 11px 12px; border: 1px solid #e1e4e9; border-radius: 8px; outline: 0; background: rgba(255,255,255,.84); color: #262b33; font-size: 11px; }
+    .auth-field textarea, .seller-field textarea { min-height: 72px; resize: vertical; }
+    .auth-field input:focus, .auth-field textarea:focus, .seller-field input:focus, .seller-field textarea:focus, .seller-field select:focus { border-color: #76859a; box-shadow: 0 0 0 3px rgba(100,116,139,.1); }
+    .role-title { display: block; margin: 17px 0 9px; }
+    .role-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .role-option { position: relative; }
+    .role-option input { position: absolute; opacity: 0; }
+    .role-option span { display: flex; min-height: 56px; flex-direction: column; justify-content: center; gap: 4px; padding: 9px 12px; border: 1px solid #e1e4e9; border-radius: 9px; color: #303640; font-size: 11px; cursor: pointer; transition: border .2s, background .2s; }
+    .role-option small { color: #838b97; font-size: 9px; }
+    .role-option input:checked + span { border-color: #53647d; background: #f1f4f8; }
+    .role-option input:focus-visible + span { outline: 2px solid #53647d; outline-offset: 2px; }
+    .google-button { width: 100%; min-height: 47px; display: flex; align-items: center; justify-content: center; gap: 11px; margin-top: 20px; border: 0; border-radius: 9px; background: #1d232c; color: white; font-size: 11px; font-weight: 600; cursor: pointer; transition: background .2s, transform .2s; }
+    .google-button:hover { transform: translateY(-1px); background: #343d49; }
+    .google-button:disabled { opacity: .65; cursor: wait; transform: none; }
+    .google-mark { display: grid; width: 19px; height: 19px; place-items: center; border-radius: 50%; background: white; color: #4285f4; font-size: 13px; font-weight: 700; }
+    .auth-note { margin: 15px 0 0; color: #848b96; font-size: 9px; line-height: 1.6; text-align: center; }
+    .auth-error, .seller-error { min-height: 0; margin: 10px 0 0; color: #aa3c35; font-size: 10px; line-height: 1.5; }
+    .auth-error:empty, .seller-error:empty { display: none; }
+    .profile-action { display: grid; width: 30px; height: 30px; place-items: center; overflow: hidden; border: 1px solid rgba(35,44,58,.12); border-radius: 50%; background: #f0f2f5; color: #4d5a6c; font-size: 10px; font-weight: 700; cursor: pointer; }
+    .profile-action img { width: 100%; height: 100%; object-fit: cover; }
+    .profile-menu { position: absolute; z-index: 25; top: calc(100% - 2px); right: 5.5%; display: none; width: min(290px,calc(100vw - 28px)); padding: 17px; border: 1px solid rgba(255,255,255,.9); border-radius: 13px; background: rgba(255,255,255,.92); box-shadow: 0 16px 50px rgba(27,36,50,.14); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+    .profile-menu.open { display: block; }
+    .profile-summary { display: flex; align-items: center; gap: 11px; padding-bottom: 13px; border-bottom: 1px solid var(--line); }
+    .profile-summary img, .profile-initial { width: 38px; height: 38px; flex: 0 0 auto; border-radius: 50%; object-fit: cover; }
+    .profile-initial { display: grid; place-items: center; background: #e8ebf0; color: #48566a; font-size: 12px; font-weight: 700; }
+    .profile-summary strong, .profile-summary small { display: block; overflow: hidden; max-width: 205px; text-overflow: ellipsis; white-space: nowrap; }
+    .profile-summary strong { margin-bottom: 4px; font-size: 11px; }
+    .profile-summary small { color: #7d8490; font-size: 9px; }
+    .profile-summary .profile-contact { margin-top: 5px; overflow: visible; max-width: 220px; white-space: normal; line-height: 1.45; }
+    .profile-role { margin: 12px 0; color: #758091; font-size: 9px; text-transform: capitalize; }
+    .profile-menu button { width: 100%; padding: 10px; border: 0; border-radius: 7px; background: transparent; color: #373e48; font-size: 10px; text-align: left; cursor: pointer; }
+    .profile-menu button:hover { background: #f0f2f5; }
+    .profile-menu .sign-out-button { color: #a3443e; }
+    .seller-backdrop { position: fixed; z-index: 45; inset: 0; display: flex; justify-content: flex-end; visibility: hidden; background: rgba(20,26,35,.27); opacity: 0; backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); transition: opacity .2s, visibility .2s; }
+    .seller-backdrop.open { visibility: visible; opacity: 1; }
+    .seller-panel { width: min(700px,100%); height: 100%; overflow-y: auto; padding: 27px clamp(18px,4vw,38px) 40px; transform: translateX(25px); background: #f8f9fb; box-shadow: -20px 0 70px rgba(22,29,39,.12); transition: transform .25s; }
+    .seller-backdrop.open .seller-panel { transform: translateX(0); }
+    .seller-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; margin-bottom: 21px; }
+    .seller-heading .section-kicker { margin-bottom: 6px; }
+    .seller-heading h2 { margin: 0; font-family: var(--sans); font-size: 27px; font-weight: 600; letter-spacing: -.04em; }
+    .seller-card { margin-bottom: 22px; padding: 20px; border: 1px solid rgba(255,255,255,.95); border-radius: 14px; background: rgba(255,255,255,.83); box-shadow: 0 8px 28px rgba(35,44,58,.055); }
+    .seller-card h3 { margin: 0 0 14px; font-size: 13px; font-weight: 600; }
+    .seller-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 12px; }
+    .seller-field { display: grid; align-content: start; gap: 7px; margin-bottom: 11px; }
+    .seller-field > span { color: #555e6b; font-size: 9px; font-weight: 600; }
+    .seller-field.full { grid-column: 1 / -1; }
+    .seller-field input[type="file"] { padding: 9px; }
+    .image-preview { display: none; width: 90px; height: 90px; margin: 1px 0 11px; border-radius: 8px; object-fit: cover; }
+    .image-preview.visible { display: block; }
+    .seller-form .button { min-height: 42px; border-radius: 7px; font-size: 9px; }
+    .seller-form .button:disabled { opacity: .65; cursor: wait; }
+    .seller-products { display: grid; gap: 10px; }
+    .seller-product { display: grid; grid-template-columns: 62px 1fr; gap: 12px; padding: 11px; border: 1px solid #e9ebef; border-radius: 10px; background: #fff; }
+    .seller-product > img { width: 62px; height: 70px; border-radius: 6px; object-fit: cover; background: #eef0f3; }
+    .seller-product-main { min-width: 0; }
+    .seller-product-title { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin: 2px 0 8px; }
+    .seller-product-title strong { overflow: hidden; font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
+    .seller-product-title span { flex: 0 0 auto; color: #7c8491; font-size: 9px; }
+    .seller-price-form { display: flex; align-items: center; gap: 7px; }
+    .seller-price-form label { display: flex; align-items: center; gap: 6px; width: 132px; padding: 0 8px; border: 1px solid #e2e5ea; border-radius: 6px; color: #657083; font-size: 10px; }
+    .seller-price-form input { width: 100%; height: 32px; border: 0; outline: 0; background: transparent; color: #303640; font-size: 10px; }
+    .seller-price-form button, .seller-delete { min-height: 32px; padding: 0 9px; border: 1px solid #e2e5ea; border-radius: 6px; background: white; color: #37404c; font-size: 9px; cursor: pointer; }
+    .seller-price-form button:hover { background: #f0f2f5; }
+    .seller-delete { margin-left: auto; color: #a3443e; }
+    .seller-empty { padding: 18px; border: 1px dashed #d8dde5; border-radius: 9px; color: #7c8491; font-size: 10px; text-align: center; }
+    .in-stock-note { margin-top: 5px; color: #758091; font-size: 9px; }
+    .out-of-stock { background: #e5e7eb !important; color: #7d8490 !important; cursor: not-allowed !important; }
+    .stars { color: #c08a35; letter-spacing: .08em; }
+    .product-rating { display: flex; align-items: center; gap: 6px; margin-top: 7px; color: #757d89; font-size: 9px; }
+    .review-link { padding: 0; border: 0; border-bottom: 1px solid #cbd0d8; background: transparent; color: #586579; font-size: 9px; cursor: pointer; }
+    .recent-review { margin-top: 8px; padding-top: 7px; border-top: 1px solid #eceef1; color: #616a77; font-size: 9px; line-height: 1.5; }
+    .recent-review strong { color: #343c48; font-weight: 600; }
+    .order-hub-button { display: flex !important; align-items: center; justify-content: space-between; gap: 10px; }
+    .pending-badge { display: inline-grid; min-width: 18px; height: 18px; place-items: center; padding: 0 5px; border-radius: 20px; background: #344359; color: white; font-size: 9px; }
+    .dialog-backdrop { position: fixed; z-index: 55; inset: 0; display: flex; align-items: center; justify-content: center; visibility: hidden; padding: 20px; background: rgba(20,26,35,.32); opacity: 0; backdrop-filter: blur(7px); -webkit-backdrop-filter: blur(7px); transition: opacity .2s, visibility .2s; }
+    .dialog-backdrop.open { visibility: visible; opacity: 1; }
+    .dialog-card { width: min(520px,100%); max-height: min(88vh,800px); overflow-y: auto; padding: 23px; transform: translateY(9px) scale(.99); border: 1px solid rgba(255,255,255,.85); border-radius: 17px; background: rgba(250,251,253,.94); box-shadow: 0 24px 80px rgba(20,27,38,.2); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); transition: transform .2s; }
+    .dialog-backdrop.open .dialog-card { transform: translateY(0) scale(1); }
+    .dialog-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 15px; margin-bottom: 17px; }
+    .dialog-heading h2 { margin: 0; font-family: var(--sans); font-size: 23px; font-weight: 600; letter-spacing: -.04em; }
+    .dialog-subtitle { margin: 6px 0 0; color: #77808d; font-size: 10px; line-height: 1.5; }
+    .address-options { display: grid; gap: 8px; margin: 12px 0; }
+    .address-choice { display: flex; align-items: flex-start; gap: 10px; padding: 12px; border: 1px solid #e2e6ec; border-radius: 9px; background: rgba(255,255,255,.7); cursor: pointer; }
+    .address-choice:has(input:checked) { border-color: #65768c; background: #f0f3f7; }
+    .address-choice input { margin-top: 2px; accent-color: #43546b; }
+    .address-choice strong, .address-choice small { display: block; }
+    .address-choice strong { margin-bottom: 4px; color: #333b47; font-size: 10px; }
+    .address-choice small { color: #747d89; font-size: 9px; line-height: 1.5; }
+    .add-address-toggle { padding: 7px 0; border: 0; background: transparent; color: #43546b; font-size: 10px; font-weight: 600; cursor: pointer; }
+    .checkout-form { margin-top: 12px; }
+    .cod-note { display: flex; align-items: center; gap: 8px; margin: 16px 0; padding: 11px; border: 1px solid #e5e8ed; border-radius: 8px; background: rgba(255,255,255,.68); color: #485465; font-size: 10px; }
+    .dialog-primary { width: 100%; min-height: 43px; border-radius: 8px; font-size: 9px; }
+    .order-list { display: grid; gap: 10px; }
+    .order-card { padding: 13px; border: 1px solid #e5e8ed; border-radius: 10px; background: rgba(255,255,255,.78); }
+    .order-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+    .order-title { margin: 0 0 5px; color: #303844; font-size: 11px; font-weight: 600; }
+    .order-meta { margin: 0; color: #7c8490; font-size: 9px; line-height: 1.6; }
+    .order-status { display: inline-flex; align-items: center; min-height: 23px; padding: 3px 8px; border: 1px solid #dfe4eb; border-radius: 20px; background: #f4f6f9; color: #4c5e77; font-size: 8px; white-space: nowrap; }
+    .order-status.pending { border-color: #f0dfbd; background: #fcf7ed; color: #94702e; }
+    .order-details { display: grid; grid-template-columns: 65px 1fr; gap: 10px; margin-top: 10px; }
+    .order-details img { width: 65px; height: 72px; border-radius: 6px; object-fit: cover; background: #eef0f3; }
+    .order-info { display: grid; align-content: center; gap: 5px; color: #596372; font-size: 9px; line-height: 1.5; }
+    .order-accept { display: flex; align-items: end; gap: 8px; margin-top: 11px; padding-top: 10px; border-top: 1px solid #eceef1; }
+    .order-accept label { display: grid; flex: 1; gap: 5px; color: #687281; font-size: 9px; }
+    .order-accept input { min-height: 34px; padding: 6px 8px; border: 1px solid #e0e4ea; border-radius: 6px; background: white; color: #333b47; font-size: 10px; }
+    .order-accept button { min-height: 34px; padding: 0 12px; border: 0; border-radius: 6px; background: #263447; color: white; font-size: 9px; cursor: pointer; }
+    .order-empty { padding: 25px 14px; border: 1px dashed #d8dde5; border-radius: 9px; color: #7c8491; font-size: 10px; text-align: center; }
+    .review-product { display: flex; align-items: center; gap: 11px; margin-bottom: 15px; padding: 10px; border-radius: 8px; background: #f0f2f5; }
+    .review-product img { width: 44px; height: 48px; border-radius: 5px; object-fit: cover; }
+    .review-product strong { color: #303844; font-size: 10px; }
+    .rating-options { display: flex; gap: 4px; margin: 8px 0 14px; }
+    .rating-options label { position: relative; cursor: pointer; }
+    .rating-options input { position: absolute; opacity: 0; }
+    .rating-options span { display: grid; width: 34px; height: 34px; place-items: center; border: 1px solid #e2e6ec; border-radius: 7px; background: white; color: #c3c9d2; font-size: 20px; }
+    .rating-options label.selected span { color: #c08a35; }
+    .rating-options input:focus-visible + span { outline: 2px solid #53647d; outline-offset: 2px; }
+    .review-form textarea { width: 100%; min-height: 96px; padding: 11px; border: 1px solid #e1e4e9; border-radius: 8px; outline: 0; background: rgba(255,255,255,.84); color: #262b33; font-size: 10px; resize: vertical; }
+    .review-form textarea:focus { border-color: #76859a; box-shadow: 0 0 0 3px rgba(100,116,139,.1); }
+    [hidden] { display: none !important; }
+    body:not(.signed-in) { overflow: hidden; }
+    .profile-menu { position: fixed; top: 108px; }
+    @media (max-width: 640px) {
+      .auth-card { padding: 25px 20px; border-radius: 17px; }
+      .auth-brand { margin-bottom: 23px; }
+      .profile-menu { right: 12px; }
+      .seller-panel { padding: 21px 15px 30px; }
+      .seller-card { padding: 15px; }
+      .seller-product { grid-template-columns: 52px 1fr; gap: 9px; }
+      .seller-product > img { width: 52px; height: 62px; }
+      .seller-price-form { flex-wrap: wrap; }
+      .dialog-backdrop { padding: 11px; }
+      .dialog-card { padding: 18px; border-radius: 14px; }
+      .order-accept { align-items: stretch; flex-direction: column; }
+      .order-accept button { width: 100%; }
+    }
   </style>
 </head>
 <body>
+  <section class="auth-gate" id="authGate" aria-labelledby="authHeading">
+    <div class="auth-card">
+      <a class="auth-brand" href="#" aria-label="SHOPX home">SHOP<span class="logo-x">X</span></a>
+      <div class="auth-intro">
+        <h1 id="authHeading">Welcome to SHOPX</h1>
+        <p>Sign in to discover products, or create your seller profile and list your first product.</p>
+      </div>
+      <div class="dialog-backdrop" id="checkoutBackdrop" aria-hidden="true">
+        <section class="dialog-card" role="dialog" aria-modal="true" aria-labelledby="checkoutHeading">
+          <div class="dialog-heading"><div><h2 id="checkoutHeading">Cash on delivery</h2><p class="dialog-subtitle">Choose where to deliver your SHOPX order.</p></div><button class="icon-button" type="button" data-close-dialog aria-label="Close checkout"><svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
+          <form id="checkoutForm" class="checkout-form">
+            <p class="seller-field"><span>Saved delivery addresses</span></p>
+            <div class="address-options" id="checkoutAddresses"></div>
+            <button class="add-address-toggle" id="showAddAddress" type="button">+ Add New Address</button>
+            <div id="newAddressFields" hidden>
+              <label class="seller-field"><span>Address label</span><input id="newAddressLabel" maxlength="30" placeholder="Home, Work, etc."></label>
+              <label class="seller-field"><span>Full address</span><textarea id="newAddressText" maxlength="300" placeholder="House / street, city, state, PIN code"></textarea></label>
+              <button class="add-address-toggle" id="saveNewAddress" type="button">Save address & select it</button>
+            </div>
+            <div class="cod-note"><span aria-hidden="true">▣</span><span>Cash on Delivery — pay in cash when your order arrives.</span></div>
+            <p class="seller-error" id="checkoutError" role="alert"></p>
+            <button class="button dialog-primary" id="placeOrderButton" type="submit">Place COD order</button>
+          </form>
+        </section>
+      </div>
+      <div class="dialog-backdrop" id="ordersBackdrop" aria-hidden="true">
+        <section class="dialog-card" role="dialog" aria-modal="true" aria-labelledby="ordersHeading">
+          <div class="dialog-heading"><div><h2 id="ordersHeading">Your Orders</h2><p class="dialog-subtitle" id="ordersSubtitle">Track your SHOPX deliveries.</p></div><button class="icon-button" type="button" data-close-dialog aria-label="Close orders"><svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
+          <div class="order-list" id="buyerOrderList"></div>
+        </section>
+      </div>
+      <div class="dialog-backdrop" id="mailboxBackdrop" aria-hidden="true">
+        <section class="dialog-card" role="dialog" aria-modal="true" aria-labelledby="mailboxHeading">
+          <div class="dialog-heading"><div><h2 id="mailboxHeading">Mailbox / Orders Hub</h2><p class="dialog-subtitle">Review orders for your products and set an expected delivery date.</p></div><button class="icon-button" type="button" data-close-dialog aria-label="Close mailbox"><svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
+          <div class="order-list" id="sellerOrderList"></div>
+        </section>
+      </div>
+      <div class="dialog-backdrop" id="reviewBackdrop" aria-hidden="true">
+        <section class="dialog-card" role="dialog" aria-modal="true" aria-labelledby="reviewHeading">
+          <div class="dialog-heading"><div><h2 id="reviewHeading">Rate this product</h2><p class="dialog-subtitle">Share an honest note with the SHOPX community.</p></div><button class="icon-button" type="button" data-close-dialog aria-label="Close review"><svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
+          <div class="review-product" id="reviewProduct"></div>
+          <form class="review-form" id="reviewForm">
+            <span class="role-title">Your rating</span>
+            <div class="rating-options" role="radiogroup" aria-label="Choose a rating from 1 to 5 stars">
+              <label><input type="radio" name="rating" value="1" required><span>★</span></label>
+              <label><input type="radio" name="rating" value="2" required><span>★</span></label>
+              <label><input type="radio" name="rating" value="3" required><span>★</span></label>
+              <label><input type="radio" name="rating" value="4" required><span>★</span></label>
+              <label><input type="radio" name="rating" value="5" required><span>★</span></label>
+            </div>
+            <label class="seller-field"><span>Your review</span><textarea name="review" minlength="3" maxlength="500" required placeholder="What should other shoppers know?"></textarea></label>
+            <p class="seller-error" id="reviewError" role="alert"></p>
+            <button class="button dialog-primary" id="submitReviewButton" type="submit">Publish review</button>
+          </form>
+        </section>
+      </div>
+      <form id="authForm">
+        <label class="auth-field"><span>Your name</span><input id="profileName" name="name" type="text" autocomplete="name" maxlength="80" required placeholder="Enter your full name"></label>
+        <label class="auth-field"><span>Mobile number</span><input id="profilePhone" name="phone" type="tel" autocomplete="tel" inputmode="tel" maxlength="20" required placeholder="+91 98765 43210"></label>
+        <label class="auth-field"><span>Address</span><textarea id="profileAddress" name="address" autocomplete="street-address" maxlength="300" required placeholder="House / street, city, state, PIN code"></textarea></label>
+        <span class="role-title">How will you use SHOPX?</span>
+        <div class="role-options">
+          <label class="role-option"><input type="radio" name="role" value="buyer" required><span>I'm a buyer<small>Browse and shop products</small></span></label>
+          <label class="role-option"><input type="radio" name="role" value="seller" required><span>I'm a seller<small>List and manage my products</small></span></label>
+          <label class="role-option"><input type="radio" name="role" value="both" required><span>Both<small>Shop and sell on SHOPX</small></span></label>
+        </div>
+        <button class="google-button" id="googleSignInButton" type="submit"><span class="google-mark" aria-hidden="true">G</span><span id="googleButtonText">Continue with Google</span></button>
+        <p class="auth-error" id="authError" role="alert"></p>
+        <p class="auth-note">Your profile details are private. Sign in securely with your Google account.</p>
+      </form>
+    </div>
+  </section>
   <div class="announcement"><span>Free shipping on your first order &nbsp;·&nbsp; Use code SHOPX10</span></div>
   <header class="site-header">
     <button class="icon-button menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false">
@@ -338,8 +554,17 @@
         <svg viewBox="0 0 24 24"><path d="M5.5 8.5h13l1 12h-15l1-12Z"/><path d="M9 9V6a3 3 0 0 1 6 0v3"/></svg>
         <span class="cart-count" id="cartCount">0</span>
       </button>
+      <button class="profile-action" id="profileButton" aria-label="Open your profile" aria-expanded="false"></button>
     </div>
   </header>
+  <div class="profile-menu" id="profileMenu">
+    <div class="profile-summary" id="profileSummary"></div>
+    <p class="profile-role" id="profileRole"></p>
+    <button class="order-hub-button" id="yourProductsButton" type="button" hidden>Your products</button>
+    <button class="order-hub-button" id="sellerOrdersButton" type="button" hidden>Mailbox / Orders Hub <span class="pending-badge" id="pendingOrderCount">0</span></button>
+    <button class="order-hub-button" id="buyerOrdersButton" type="button" hidden>Your Orders</button>
+    <button class="sign-out-button" id="signOutButton" type="button">Sign out</button>
+  </div>
 
   <main>
     <section class="hero" aria-label="Find your next favorite">
@@ -388,7 +613,7 @@
     </section>
 
     <section class="editorial" id="story">
-      <img class="editorial-image" src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=1200&q=85" alt="Modern streetwear look from the latest collection">
+      <img class="editorial-image" src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=85" alt="A bright, modern workspace with a laptop and everyday tech essentials">
       <div class="editorial-copy">
         <p class="section-kicker">The SHOPX edit</p>
         <h2>Good style. Great finds. All yours.</h2>
@@ -440,24 +665,63 @@
     </section>
   </div>
   <div class="overlay" id="overlay"></div>
+  <div class="seller-backdrop" id="sellerBackdrop" aria-hidden="true">
+    <section class="seller-panel" role="dialog" aria-modal="true" aria-labelledby="sellerHeading">
+      <div class="seller-heading">
+        <div><p class="section-kicker">Seller studio</p><h2 id="sellerHeading">Your products</h2></div>
+        <button class="icon-button" id="closeSellerStudio" type="button" aria-label="Close seller studio"><svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
+      </div>
+      <div class="seller-card">
+        <h3>Add a product</h3>
+        <form class="seller-form" id="sellerProductForm">
+          <div class="seller-form-grid">
+            <label class="seller-field"><span>Product name</span><input name="name" required maxlength="80" placeholder="e.g. Everyday Cotton Tee"></label>
+            <label class="seller-field"><span>Category</span><select name="category" required><option value="">Choose a category</option><option>Fashion</option><option>Tech</option><option>Accessories</option><option>Beauty</option></select></label>
+            <label class="seller-field"><span>Price (INR)</span><input name="price" type="number" min="1" max="10000000" step="1" required placeholder="2500"></label>
+            <label class="seller-field"><span>Available stock</span><input name="stock" type="number" min="0" max="1000000" step="1" required placeholder="10"></label>
+            <label class="seller-field"><span>Product image</span><input name="image" type="file" accept="image/jpeg,image/png,image/webp" required></label>
+            <label class="seller-field full"><span>Description</span><textarea name="description" maxlength="240" required placeholder="Describe the product"></textarea></label>
+          </div>
+          <img class="image-preview" id="productImagePreview" alt="Selected product image preview">
+          <button class="button" id="publishProductButton" type="submit">Upload image & publish product</button>
+          <p class="seller-error" id="sellerFormError" role="alert"></p>
+        </form>
+      </div>
+      <div class="seller-card">
+        <h3>Your listings</h3>
+        <div class="seller-products" id="sellerProducts"><p class="seller-empty">Loading your products…</p></div>
+      </div>
+    </section>
+  </div>
   <aside class="cart-drawer" id="cartDrawer" aria-label="Shopping bag" aria-hidden="true">
     <div class="drawer-heading"><h2>Your bag <span id="drawerCount">(0)</span></h2><button class="icon-button" id="closeCart" aria-label="Close shopping bag"><svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
     <div class="cart-items" id="cartItems"></div>
-    <div class="cart-footer"><div class="subtotal"><span>Subtotal</span><strong id="cartSubtotal">$0.00</strong></div><button class="button" id="checkoutButton">Continue to checkout <svg viewBox="0 0 24 24"><path d="M4 12h15m-6-6 6 6-6 6"/></svg></button></div>
+    <div class="cart-footer"><div class="subtotal"><span>Subtotal</span><strong id="cartSubtotal">₹0</strong></div>    <button class="button" id="checkoutButton">Checkout · Cash on delivery <svg viewBox="0 0 24 24"><path d="M4 12h15m-6-6 6 6-6 6"/></svg></button></div>
   </aside>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script>
-    const products = [
-      { id: 1, name: "Everyday Cotton Tee", detail: "Organic cotton · Chalk", price: 34, category: "Fashion", tag: "Bestseller", image: "photo-1521572163474-6864f9cf17ab" },
-      { id: 2, name: "Studio Headphones", detail: "Wireless · 30-hour battery", price: 129, category: "Tech", tag: "Just in", image: "photo-1505740420928-5e560c06d30e" },
-      { id: 3, name: "Minimalist Watch", detail: "Stainless steel · Silver", price: 115, category: "Accessories", tag: "Trending", image: "photo-1523275335684-37898b6baf30" },
-      { id: 4, name: "Daily Glow Serum", detail: "Hydrating · 30 ml", price: 38, category: "Beauty", tag: "Customer love", image: "photo-1608248543803-ba4f8c70ae0b" },
-      { id: 5, name: "Weekend Tote", detail: "Roomy canvas · Natural", price: 56, category: "Fashion", tag: "", image: "photo-1584917865442-de89df76afd3" },
-      { id: 6, name: "Sound Mini Speaker", detail: "Portable · Deep bass", price: 74, category: "Tech", tag: "", image: "photo-1608043152269-423dbba4e7e1" },
-      { id: 7, name: "Everyday Sunglasses", detail: "UV400 · Tortoise shell", price: 49, category: "Accessories", tag: "Staff pick", image: "photo-1511499767150-a48a237f0083" },
-      { id: 8, name: "Soft Touch Moisturizer", detail: "Nourishing · 50 ml", price: 32, category: "Beauty", tag: "", image: "photo-1556229010-6c3f2c9ca5f8" }
-    ];
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+    import { browserLocalPersistence, getAuth, GoogleAuthProvider, onAuthStateChanged, setPersistence, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+    import { arrayUnion, collection, deleteDoc, doc, getDoc, getFirestore, onSnapshot, orderBy, query, runTransaction, serverTimestamp, setDoc, Timestamp, updateDoc, where } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+    import { deleteObject, getDownloadURL, getStorage, ref as storageRef, uploadBytes } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBzWj8O41IUaOe0KzEpMZriMKiUfeBMckI",
+      authDomain: "shopx-921b7.firebaseapp.com",
+      projectId: "shopx-921b7",
+      storageBucket: "shopx-921b7.firebasestorage.app",
+      messagingSenderId: "745762319208",
+      appId: "1:745762319208:web:952b9d1b73b8f9f85404dd",
+      measurementId: "G-NV9N13LX47"
+    };
+    const firebaseApp = initializeApp(firebaseConfig);
+    const auth = getAuth(firebaseApp);
+    const googleProvider = new GoogleAuthProvider();
+    const db = getFirestore(firebaseApp);
+    const storage = getStorage(firebaseApp);
+
+    let products = [];
     const cart = new Map();
     const wishlist = new Set();
     const productGrid = document.getElementById("productGrid");
@@ -465,11 +729,44 @@
     const overlay = document.getElementById("overlay");
     const searchBackdrop = document.getElementById("searchBackdrop");
     const searchInput = document.getElementById("searchInput");
+    const authGate = document.getElementById("authGate");
+    const sellerBackdrop = document.getElementById("sellerBackdrop");
+    let currentUser = null;
+    let userProfile = null;
+    let unsubscribeProducts = null;
+    let unsubscribeBuyerOrders = null;
+    let unsubscribeSellerOrders = null;
+    let activeReviewProductId = null;
+    let cartCheckoutBusy = false;
+    const buyerOrders = [];
+    const sellerOrders = [];
+    const reviewsByProduct = new Map();
+    const unsubscribeReviews = new Map();
     let toastTimer;
     let searchQuery = "";
 
-    function productImage(id, width = 700) {
-      return `https://images.unsplash.com/${id}?auto=format&fit=crop&w=${width}&q=82`;
+    const inrFormatter = new Intl.NumberFormat("en-IN", {
+      style: "currency",
+      currency: "INR",
+      maximumFractionDigits: 0
+    });
+
+    function formatPrice(amount) {
+      return inrFormatter.format(amount);
+    }
+
+    function roleCanBuy() {
+      return userProfile?.role === "buyer" || userProfile?.role === "both";
+    }
+
+    function roleCanSell() {
+      return userProfile?.role === "seller" || userProfile?.role === "both";
+    }
+
+    function escapeHtml(value = "") {
+      return String(value).replace(/[&<>"']/g, character => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+      })[character]);
     }
 
     function renderProducts(filter = "All", query = "") {
@@ -481,16 +778,380 @@
       productGrid.innerHTML = visible.length ? visible.map(product => `
         <article class="product-card">
           <div class="product-image-wrap">
-            <img class="product-image" src="${productImage(product.image)}" alt="${product.name}" loading="lazy">
-            ${product.tag ? `<span class="product-tag">${product.tag}</span>` : ""}
-            <button class="wishlist${wishlist.has(product.id) ? " liked" : ""}" data-wishlist="${product.id}" aria-label="${wishlist.has(product.id) ? "Remove from" : "Add to"} wishlist">
+            <img class="product-image" src="${escapeHtml(product.imageUrl)}" alt="${escapeHtml(product.name)}" loading="lazy">
+            <span class="product-tag">${escapeHtml(product.category)}</span>
+            <button class="wishlist${wishlist.has(product.id) ? " liked" : ""}" data-wishlist="${escapeHtml(product.id)}" aria-label="${wishlist.has(product.id) ? "Remove from" : "Add to"} wishlist">
               <svg viewBox="0 0 24 24"><path d="M20.8 8.7c0 5.1-8.8 11-8.8 11s-8.8-5.9-8.8-11A4.7 4.7 0 0 1 12 6.3a4.7 4.7 0 0 1 8.8 2.4Z"/></svg>
             </button>
-            <div class="quick-add"><button class="button" data-add="${product.id}">Add to bag <span>·</span> $${product.price}</button></div>
+            <div class="quick-add"><button class="button${product.stock <= 0 ? " out-of-stock" : ""}" data-add="${escapeHtml(product.id)}" ${product.stock <= 0 || !roleCanBuy() || (cart.get(product.id)?.quantity || 0) >= product.stock ? "disabled aria-disabled=\"true\"" : ""}>${product.stock <= 0 ? "Out of Stock" : `Add to bag · ${formatPrice(product.price)}`}</button></div>
           </div>
-          <div class="product-meta"><div><h3 class="product-name">${product.name}</h3><p class="product-detail">${product.detail}</p></div><span class="product-price">$${product.price}</span></div>
+          <div class="product-meta"><div><h3 class="product-name">${escapeHtml(product.name)}</h3><p class="product-detail">${escapeHtml(product.detail)}</p><p class="in-stock-note">${product.stock > 0 ? `${product.stock} in stock` : "Currently unavailable"}</p>${renderProductReviews(product)}</div><span class="product-price">${formatPrice(product.price)}</span></div>
         </article>
-      `).join("") : `<p style="grid-column:1/-1;padding:35px 0;color:#777a73;font-size:12px">No pieces found. Try another search.</p>`;
+      `).join("") : `<p style="grid-column:1/-1;padding:35px 0;color:#777a73;font-size:12px">${products.length ? "No products match this search." : "No products yet. Check back soon for new finds."}</p>`;
+    }
+
+    function renderProductReviews(product) {
+      const reviews = reviewsByProduct.get(product.id) || [];
+      const average = reviews.length
+        ? (reviews.reduce((total, review) => total + review.rating, 0) / reviews.length).toFixed(1)
+        : null;
+      const recent = reviews.slice(0, 2).map(review => `
+        <p class="recent-review"><strong>${escapeHtml(review.reviewerName)}</strong> · <span class="stars">${"★".repeat(review.rating)}${"☆".repeat(5 - review.rating)}</span><br>${escapeHtml(review.text)}</p>
+      `).join("");
+      return `<div class="product-rating"><span class="stars">${average ? `${"★".repeat(Math.round(Number(average)))}${"☆".repeat(5 - Math.round(Number(average)))}` : "☆☆☆☆☆"}</span><span>${average ? `${average} · ${reviews.length} review${reviews.length === 1 ? "" : "s"}` : "No reviews"}</span><button class="review-link" type="button" data-review-product="${escapeHtml(product.id)}">Write a review</button></div>${recent}`;
+    }
+
+    function syncProductReviews() {
+      const productIds = new Set(products.map(product => product.id));
+      for (const [productId, unsubscribe] of unsubscribeReviews) {
+        if (!productIds.has(productId)) {
+          unsubscribe();
+          unsubscribeReviews.delete(productId);
+          reviewsByProduct.delete(productId);
+        }
+      }
+      for (const product of products) {
+        if (unsubscribeReviews.has(product.id)) continue;
+        const unsubscribe = onSnapshot(collection(db, "products", product.id, "reviews"), snapshot => {
+          reviewsByProduct.set(product.id, snapshot.docs.map(reviewDoc => ({
+            id: reviewDoc.id,
+            ...reviewDoc.data()
+          })).sort((a, b) => (b.createdAt?.toMillis?.() || 0) - (a.createdAt?.toMillis?.() || 0)));
+          renderProducts(document.querySelector(".filter-button.active").dataset.filter, searchQuery);
+        }, error => {
+          console.error(`SHOPX reviews could not be loaded for ${product.id}:`, error);
+          reviewsByProduct.set(product.id, []);
+        });
+        unsubscribeReviews.set(product.id, unsubscribe);
+      }
+    }
+
+    function formatOrderDate(date) {
+      if (!date) return "Not set";
+      const value = date.toDate ? date.toDate() : new Date(date);
+      return Number.isNaN(value.getTime()) ? "Not set" : new Intl.DateTimeFormat("en-IN", { dateStyle: "medium" }).format(value);
+    }
+
+    function renderOrderCard(order, { seller = false } = {}) {
+      const dateLabel = order.expectedDeliveryDate
+        ? `Expected delivery: ${formatOrderDate(order.expectedDeliveryDate)}`
+        : "Delivery date will be shared by the seller.";
+      const createdLabel = formatOrderDate(order.createdAt);
+      const statusClass = order.status === "Pending Acceptance" ? "pending" : "";
+      const acceptance = seller && order.status === "Pending Acceptance" ? `
+        <form class="order-accept" data-accept-order="${escapeHtml(order.id)}">
+          <label>Expected delivery date<input type="date" name="deliveryDate" min="${getTodayDate()}" required></label>
+          <button type="submit">Accept order</button>
+        </form>
+      ` : "";
+      return `
+        <article class="order-card">
+          <div class="order-top">
+            <div><h3 class="order-title">${escapeHtml(order.productName)} · Qty ${escapeHtml(order.quantity)}</h3><p class="order-meta">${seller ? `Buyer: ${escapeHtml(order.buyerName)}` : `Order date: ${createdLabel}`} · ${formatPrice(order.totalPrice)}</p></div>
+            <span class="order-status ${statusClass}">${escapeHtml(order.status)}</span>
+          </div>
+          <div class="order-details">
+            <img src="${escapeHtml(order.imageUrl)}" alt="">
+            <div class="order-info">
+              <span>${seller ? `Delivery address: ${escapeHtml(order.deliveryAddress?.text || "")}` : `Payment: ${escapeHtml(order.paymentMethod)}`}</span>
+              <span>${dateLabel}</span>
+              ${seller ? `<span>Phone: ${escapeHtml(order.buyerPhone)}</span>` : ""}
+            </div>
+          </div>
+          ${acceptance}
+        </article>
+      `;
+    }
+
+    function renderBuyerOrders() {
+      const list = document.getElementById("buyerOrderList");
+      const sorted = [...buyerOrders].sort((a, b) => (b.createdAt?.toMillis?.() || 0) - (a.createdAt?.toMillis?.() || 0));
+      list.innerHTML = sorted.length
+        ? sorted.map(order => renderOrderCard(order)).join("")
+        : '<p class="order-empty">No orders yet. Your COD purchases will appear here.</p>';
+    }
+
+    function renderSellerOrders() {
+      const pendingCount = sellerOrders.filter(order => order.status === "Pending Acceptance").length;
+      document.getElementById("pendingOrderCount").textContent = pendingCount;
+      const list = document.getElementById("sellerOrderList");
+      const sorted = [...sellerOrders].sort((a, b) => (b.createdAt?.toMillis?.() || 0) - (a.createdAt?.toMillis?.() || 0));
+      list.innerHTML = sorted.length
+        ? sorted.map(order => renderOrderCard(order, { seller: true })).join("")
+        : '<p class="order-empty">No orders for your products yet.</p>';
+    }
+
+    function subscribeToOrders() {
+      if (unsubscribeBuyerOrders) unsubscribeBuyerOrders();
+      if (unsubscribeSellerOrders) unsubscribeSellerOrders();
+      buyerOrders.splice(0);
+      sellerOrders.splice(0);
+      renderBuyerOrders();
+      renderSellerOrders();
+      if (roleCanBuy()) {
+        unsubscribeBuyerOrders = onSnapshot(query(collection(db, "orders"), where("buyerId", "==", currentUser.uid)), snapshot => {
+          buyerOrders.splice(0, buyerOrders.length, ...snapshot.docs.map(orderDoc => ({ id: orderDoc.id, ...orderDoc.data() })));
+          renderBuyerOrders();
+        }, error => {
+          console.error("SHOPX buyer orders could not be loaded:", error);
+          showToast(`Your orders could not be loaded: ${error.message}`);
+        });
+      }
+      if (roleCanSell()) {
+        unsubscribeSellerOrders = onSnapshot(query(collection(db, "orders"), where("sellerId", "==", currentUser.uid)), snapshot => {
+          sellerOrders.splice(0, sellerOrders.length, ...snapshot.docs.map(orderDoc => ({ id: orderDoc.id, ...orderDoc.data() })));
+          renderSellerOrders();
+        }, error => {
+          console.error("SHOPX seller orders could not be loaded:", error);
+          showToast(`Seller orders could not be loaded: ${error.message}`);
+        });
+      }
+    }
+
+    function getTodayDate() {
+      const today = new Date();
+      const localDate = new Date(today.getTime() - today.getTimezoneOffset() * 60000);
+      return localDate.toISOString().slice(0, 10);
+    }
+
+    function openDialog(id) {
+      const backdrop = document.getElementById(id);
+      backdrop.classList.add("open");
+      backdrop.setAttribute("aria-hidden", "false");
+      document.body.classList.add("locked");
+      backdrop.querySelector("button, input, textarea")?.focus();
+    }
+
+    function closeDialog(backdrop) {
+      backdrop.classList.remove("open");
+      backdrop.setAttribute("aria-hidden", "true");
+      const anotherDialogOpen = document.querySelector(".dialog-backdrop.open, .seller-backdrop.open, .cart-drawer.open, .search-backdrop.open");
+      if (!anotherDialogOpen) document.body.classList.remove("locked");
+    }
+
+    function renderCheckoutAddresses(selectedId = "") {
+      const container = document.getElementById("checkoutAddresses");
+      const addresses = Array.isArray(userProfile?.addresses) ? userProfile.addresses : [];
+      container.innerHTML = addresses.length ? addresses.map((address, index) => `
+        <label class="address-choice">
+          <input type="radio" name="selectedAddress" value="${escapeHtml(address.id)}" ${address.id === selectedId || (!selectedId && index === 0) ? "checked" : ""} required>
+          <span><strong>${escapeHtml(address.label)}</strong><small>${escapeHtml(address.text)}</small></span>
+        </label>
+      `).join("") : '<p class="order-empty">Add a delivery address to place your order.</p>';
+      document.getElementById("placeOrderButton").disabled = !addresses.length || cartCheckoutBusy;
+    }
+
+    function openCheckout() {
+      if (!roleCanBuy()) {
+        showToast("Buyer or both role is needed to place an order.");
+        return;
+      }
+      if (!cart.size) return;
+      closeCart();
+      document.getElementById("checkoutError").textContent = "";
+      document.getElementById("newAddressFields").hidden = true;
+      document.getElementById("newAddressLabel").value = "";
+      document.getElementById("newAddressText").value = "";
+      renderCheckoutAddresses();
+      openDialog("checkoutBackdrop");
+    }
+
+    async function saveCheckoutAddress() {
+      const labelInput = document.getElementById("newAddressLabel");
+      const textInput = document.getElementById("newAddressText");
+      const label = labelInput.value.trim();
+      const text = textInput.value.trim();
+      if (!label || !text || text.length > 300) {
+        document.getElementById("checkoutError").textContent = "Enter an address label and a full address (up to 300 characters).";
+        return;
+      }
+      if (!Array.isArray(userProfile.addresses) || userProfile.addresses.length >= 20) {
+        document.getElementById("checkoutError").textContent = "You can save up to 20 addresses.";
+        return;
+      }
+      const address = { id: crypto.randomUUID(), label: label.slice(0, 30), text };
+      const saveButton = document.getElementById("saveNewAddress");
+      saveButton.disabled = true;
+      document.getElementById("checkoutError").textContent = "";
+      try {
+        await updateDoc(doc(db, "users", currentUser.uid), {
+          addresses: arrayUnion(address),
+          updatedAt: serverTimestamp()
+        });
+        userProfile = { ...userProfile, addresses: [...userProfile.addresses, address] };
+        document.getElementById("newAddressFields").hidden = true;
+        renderCheckoutAddresses(address.id);
+        showToast("Address saved and selected.");
+      } catch (error) {
+        console.error("SHOPX address save failed:", error);
+        document.getElementById("checkoutError").textContent = `Address could not be saved: ${error.message}`;
+      } finally {
+        saveButton.disabled = false;
+      }
+    }
+
+    async function placeCodOrder(event) {
+      event.preventDefault();
+      if (!roleCanBuy() || !currentUser || !cart.size) return;
+      const selectedId = document.querySelector('input[name="selectedAddress"]:checked')?.value;
+      const address = userProfile.addresses?.find(item => item.id === selectedId);
+      if (!address) {
+        document.getElementById("checkoutError").textContent = "Choose or add a delivery address before placing your order.";
+        return;
+      }
+
+      const cartItems = [...cart.values()].map(item => ({ productId: item.product.id, quantity: item.quantity }));
+      const orderRefs = cartItems.map(() => doc(collection(db, "orders")));
+      const button = document.getElementById("placeOrderButton");
+      cartCheckoutBusy = true;
+      button.disabled = true;
+      button.textContent = "Placing COD order…";
+      document.getElementById("checkoutError").textContent = "";
+      try {
+        await runTransaction(db, async transaction => {
+          const productSnapshots = [];
+          for (const cartItem of cartItems) {
+            const productRef = doc(db, "products", cartItem.productId);
+            const productSnapshot = await transaction.get(productRef);
+            if (!productSnapshot.exists()) throw new Error("A product in your cart is no longer available.");
+            const product = productSnapshot.data();
+            if (!Number.isSafeInteger(product.stock) || product.stock < cartItem.quantity) {
+              throw new Error(`${product.name} does not have enough stock. Please update your cart.`);
+            }
+            productSnapshots.push({ cartItem, productRef, product });
+          }
+          for (const [index, row] of productSnapshots.entries()) {
+            const orderRef = orderRefs[index];
+            transaction.update(row.productRef, {
+              stock: row.product.stock - row.cartItem.quantity,
+              lastOrderId: orderRef.id,
+              updatedAt: serverTimestamp()
+            });
+            transaction.set(orderRef, {
+              buyerId: currentUser.uid,
+              buyerName: userProfile.name,
+              buyerPhone: userProfile.phone,
+              sellerId: row.product.sellerId,
+              productId: row.cartItem.productId,
+              productName: row.product.name,
+              imageUrl: row.product.imageUrl,
+              quantity: row.cartItem.quantity,
+              unitPrice: row.product.price,
+              totalPrice: row.product.price * row.cartItem.quantity,
+              deliveryAddress: { id: address.id, label: address.label, text: address.text },
+              paymentMethod: "Cash on Delivery",
+              status: "Pending Acceptance",
+              expectedDeliveryDate: null,
+              createdAt: serverTimestamp(),
+              updatedAt: serverTimestamp()
+            });
+          }
+        });
+        cart.clear();
+        renderCart();
+        closeDialog(document.getElementById("checkoutBackdrop"));
+        showToast("COD order placed. Waiting for seller acceptance.");
+      } catch (error) {
+        console.error("SHOPX COD checkout failed:", error);
+        document.getElementById("checkoutError").textContent = error.message || "Your order could not be placed. Please try again.";
+      } finally {
+        cartCheckoutBusy = false;
+        button.disabled = !cart.size;
+        button.textContent = "Place COD order";
+      }
+    }
+
+    function openBuyerOrders() {
+      if (!roleCanBuy()) return;
+      document.getElementById("profileMenu").classList.remove("open");
+      renderBuyerOrders();
+      openDialog("ordersBackdrop");
+    }
+
+    function openSellerMailbox() {
+      if (!roleCanSell()) return;
+      document.getElementById("profileMenu").classList.remove("open");
+      renderSellerOrders();
+      openDialog("mailboxBackdrop");
+    }
+
+    async function acceptSellerOrder(event) {
+      event.preventDefault();
+      const form = event.target.closest("[data-accept-order]");
+      if (!form || !roleCanSell()) return;
+      const dateValue = form.elements.deliveryDate.value;
+      if (!dateValue || dateValue < getTodayDate()) {
+        showToast("Choose today or a future expected delivery date.");
+        return;
+      }
+      const orderId = form.dataset.acceptOrder;
+      const button = form.querySelector('button[type="submit"]');
+      button.disabled = true;
+      try {
+        await runTransaction(db, async transaction => {
+          const orderRef = doc(db, "orders", orderId);
+          const snapshot = await transaction.get(orderRef);
+          if (!snapshot.exists()) throw new Error("This order no longer exists.");
+          const order = snapshot.data();
+          if (order.sellerId !== currentUser.uid || order.status !== "Pending Acceptance") {
+            throw new Error("This order is no longer waiting for your acceptance.");
+          }
+          const deliveryDate = new Date(`${dateValue}T23:59:59`);
+          transaction.update(orderRef, {
+            status: "Accepted & Processing",
+            expectedDeliveryDate: Timestamp.fromDate(deliveryDate),
+            updatedAt: serverTimestamp()
+          });
+        });
+        showToast("Order accepted. The buyer can see the delivery date.");
+      } catch (error) {
+        console.error("SHOPX seller order acceptance failed:", error);
+        showToast(`Order could not be accepted: ${error.message}`);
+      } finally {
+        button.disabled = false;
+      }
+    }
+
+    function openReview(productId) {
+      if (!currentUser || !userProfile) return;
+      const product = products.find(item => item.id === productId);
+      if (!product) return;
+      activeReviewProductId = productId;
+      document.getElementById("reviewProduct").innerHTML = `<img src="${escapeHtml(product.imageUrl)}" alt=""><strong>${escapeHtml(product.name)}</strong>`;
+      document.getElementById("reviewForm").reset();
+      document.querySelectorAll(".rating-options label").forEach(label => label.classList.remove("selected"));
+      document.getElementById("reviewError").textContent = "";
+      openDialog("reviewBackdrop");
+    }
+
+    async function saveReview(event) {
+      event.preventDefault();
+      const product = products.find(item => item.id === activeReviewProductId);
+      const rating = Number(new FormData(event.currentTarget).get("rating"));
+      const text = String(new FormData(event.currentTarget).get("review") || "").trim();
+      if (!product || !Number.isInteger(rating) || rating < 1 || rating > 5 || text.length < 3 || text.length > 500) {
+        document.getElementById("reviewError").textContent = "Choose a 1–5 star rating and write a review of at least 3 characters.";
+        return;
+      }
+      const button = document.getElementById("submitReviewButton");
+      button.disabled = true;
+      try {
+        await setDoc(doc(db, "products", product.id, "reviews", currentUser.uid), {
+          userId: currentUser.uid,
+          reviewerName: userProfile.name,
+          rating,
+          text,
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp()
+        });
+        closeDialog(document.getElementById("reviewBackdrop"));
+        showToast("Thanks for sharing your review.");
+      } catch (error) {
+        console.error("SHOPX review save failed:", error);
+        document.getElementById("reviewError").textContent = `Review could not be saved: ${error.message}`;
+      } finally {
+        button.disabled = false;
+      }
     }
 
     function showToast(message) {
@@ -506,20 +1167,470 @@
       const subtotal = [...cart.values()].reduce((sum, item) => sum + item.product.price * item.quantity, 0);
       document.getElementById("cartCount").textContent = count;
       document.getElementById("drawerCount").textContent = `(${count})`;
-      document.getElementById("cartSubtotal").textContent = `$${subtotal.toFixed(2)}`;
+      document.getElementById("cartSubtotal").textContent = formatPrice(subtotal);
       const cartItems = document.getElementById("cartItems");
       if (!cart.size) {
         cartItems.innerHTML = '<p class="empty-cart">Your bag is taking a little breather.<br>Find something you love.</p>';
+        document.getElementById("checkoutButton").disabled = true;
         return;
       }
+      document.getElementById("checkoutButton").disabled = !cart.size || cartCheckoutBusy || !roleCanBuy();
       cartItems.innerHTML = [...cart.values()].map(({ product, quantity }) => `
         <div class="cart-item">
-          <img src="${productImage(product.image, 180)}" alt="">
-          <div><h3>${product.name}</h3><p>$${product.price}</p><div class="quantity"><button data-quantity="${product.id}" data-delta="-1" aria-label="Remove one ${product.name}">−</button><span>${quantity}</span><button data-quantity="${product.id}" data-delta="1" aria-label="Add one ${product.name}">+</button></div></div>
-          <span class="cart-item-price">$${(product.price * quantity).toFixed(2)}</span>
+          <img src="${escapeHtml(product.imageUrl)}" alt="">
+          <div><h3>${escapeHtml(product.name)}</h3><p>${formatPrice(product.price)}</p><div class="quantity"><button data-quantity="${escapeHtml(product.id)}" data-delta="-1" aria-label="Remove one ${escapeHtml(product.name)}">−</button><span>${quantity}</span><button data-quantity="${escapeHtml(product.id)}" data-delta="1" aria-label="Add one ${escapeHtml(product.name)}" ${quantity >= product.stock ? "disabled" : ""}>+</button></div></div>
+          <span class="cart-item-price">${formatPrice(product.price * quantity)}</span>
         </div>
       `).join("");
     }
+
+    function setAuthError(message) {
+      document.getElementById("authError").textContent = message;
+    }
+
+    function setSellerError(message) {
+      document.getElementById("sellerFormError").textContent = message;
+    }
+
+    function showAuthGate(message = "") {
+      authGate.hidden = false;
+      setAuthError(message);
+    }
+
+    function renderProfile(profile) {
+      const button = document.getElementById("profileButton");
+      const summary = document.getElementById("profileSummary");
+      button.replaceChildren();
+      summary.replaceChildren();
+
+      if (profile.photoURL) {
+        const avatar = document.createElement("img");
+        avatar.src = profile.photoURL;
+        avatar.alt = "";
+        button.append(avatar);
+        const summaryImage = avatar.cloneNode();
+        summary.append(summaryImage);
+      } else {
+        const initial = (profile.name || "S").trim().charAt(0).toUpperCase();
+        button.textContent = initial;
+        const summaryInitial = document.createElement("span");
+        summaryInitial.className = "profile-initial";
+        summaryInitial.textContent = initial;
+        summary.append(summaryInitial);
+      }
+
+      const details = document.createElement("span");
+      const name = document.createElement("strong");
+      name.textContent = profile.name;
+      const email = document.createElement("small");
+      email.textContent = profile.email || "";
+      const contact = document.createElement("small");
+      contact.className = "profile-contact";
+      contact.textContent = `${profile.phone} · ${profile.addresses?.[0]?.text || ""}`;
+      details.append(name, email, contact);
+      summary.append(details);
+      document.getElementById("yourProductsButton").hidden = !roleCanSell();
+      document.getElementById("sellerOrdersButton").hidden = !roleCanSell();
+      document.getElementById("buyerOrdersButton").hidden = !roleCanBuy();
+      document.getElementById("profileRole").textContent = profile.role === "both" ? "Buyer & seller account" : `${profile.role} account`;
+    }
+
+    function renderSellerProducts() {
+      const sellerProducts = products.filter(product => product.sellerId === currentUser?.uid);
+      const container = document.getElementById("sellerProducts");
+      if (!sellerProducts.length) {
+        container.innerHTML = '<p class="seller-empty">You have not listed any products yet. Add your first product above.</p>';
+        return;
+      }
+      container.innerHTML = sellerProducts.map(product => `
+        <article class="seller-product" data-seller-product="${escapeHtml(product.id)}">
+          <img src="${escapeHtml(product.imageUrl)}" alt="${escapeHtml(product.name)}">
+          <div class="seller-product-main">
+            <div class="seller-product-title"><strong>${escapeHtml(product.name)}</strong><span>${escapeHtml(product.category)}</span></div>
+            <div class="seller-price-form">
+              <label>₹ <input type="number" min="1" max="10000000" step="1" value="${escapeHtml(product.price)}" aria-label="Price for ${escapeHtml(product.name)}"></label>
+              <button type="button" data-save-price="${escapeHtml(product.id)}">Save price</button>
+              <label>Stock <input type="number" min="0" max="1000000" step="1" value="${escapeHtml(product.stock)}" aria-label="Stock for ${escapeHtml(product.name)}"></label>
+              <button type="button" data-save-stock="${escapeHtml(product.id)}">Save stock</button>
+              <button class="seller-delete" type="button" data-delete-product="${escapeHtml(product.id)}">Remove</button>
+            </div>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    function activateProfile(profile) {
+      userProfile = profile;
+      document.body.classList.add("signed-in");
+      authGate.hidden = true;
+      renderProfile(profile);
+      renderProducts(document.querySelector(".filter-button.active").dataset.filter, searchQuery);
+      if (unsubscribeProducts) unsubscribeProducts();
+      unsubscribeProducts = onSnapshot(collection(db, "products"), snapshot => {
+        products = snapshot.docs.map(productDoc => {
+          const data = productDoc.data();
+          return {
+            id: productDoc.id,
+            name: data.name,
+            detail: data.description,
+            category: data.category,
+            price: data.price,
+            stock: Number.isSafeInteger(data.stock) ? data.stock : 0,
+            imageUrl: data.imageUrl,
+            imagePath: data.imagePath,
+            sellerId: data.sellerId,
+            createdAt: data.createdAt
+          };
+        }).sort((a, b) => (b.createdAt?.toMillis?.() || 0) - (a.createdAt?.toMillis?.() || 0));
+        for (const [productId, item] of cart) {
+          const latestProduct = products.find(product => product.id === productId);
+          if (latestProduct) item.product = latestProduct;
+          else cart.delete(productId);
+        }
+        renderProducts(document.querySelector(".filter-button.active").dataset.filter, searchQuery);
+        renderCart();
+        renderSellerProducts();
+        updateSearchResults(searchInput.value);
+        syncProductReviews();
+      }, error => {
+        console.error("SHOPX product subscription failed:", error);
+        showToast(`Products could not be loaded: ${error.message}`);
+      });
+      subscribeToOrders();
+    }
+
+    document.getElementById("authForm").addEventListener("submit", async event => {
+      event.preventDefault();
+      setAuthError("");
+      const button = document.getElementById("googleSignInButton");
+      const buttonText = document.getElementById("googleButtonText");
+      const form = event.currentTarget;
+      const role = form.querySelector('input[name="role"]:checked')?.value;
+      const profile = {
+        name: document.getElementById("profileName").value.trim(),
+        phone: document.getElementById("profilePhone").value.trim(),
+        address: document.getElementById("profileAddress").value.trim(),
+        role
+      };
+      if (!["buyer", "seller", "both"].includes(role) || !profile.name || profile.name.length > 80 ||
+          !profile.phone || profile.phone.length > 20 || !profile.address || profile.address.length > 300) {
+        setAuthError("Please complete your details and choose buyer, seller, or both.");
+        return;
+      }
+      if (!/^\+?[0-9][0-9() .-]{5,18}[0-9]$/.test(profile.phone)) {
+        setAuthError("Enter a valid mobile number, including its country code if needed.");
+        return;
+      }
+
+      button.disabled = true;
+      buttonText.textContent = "Connecting securely…";
+      try {
+        if (!currentUser) {
+          const credential = await signInWithPopup(auth, googleProvider);
+          currentUser = credential.user;
+        }
+        const profileRef = doc(db, "users", currentUser.uid);
+        const existingProfile = await getDoc(profileRef);
+        if (existingProfile.exists()) {
+          activateProfile(existingProfile.data());
+          return;
+        }
+        const legacyProfileSnapshot = await getDoc(doc(db, "profiles", currentUser.uid));
+        const legacyProfile = legacyProfileSnapshot.exists() ? legacyProfileSnapshot.data() : null;
+        const initialAddress = {
+          id: crypto.randomUUID(),
+          label: "Home",
+          text: profile.address
+        };
+        const legacyAddress = legacyProfile?.address && legacyProfile.address !== profile.address
+          ? { id: crypto.randomUUID(), label: "Previous address", text: legacyProfile.address }
+          : null;
+        const completeProfile = {
+          name: profile.name,
+          phone: profile.phone,
+          role: profile.role,
+          addresses: legacyAddress ? [initialAddress, legacyAddress] : [initialAddress],
+          email: currentUser.email || "",
+          photoURL: currentUser.photoURL || "",
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp()
+        };
+        await setDoc(profileRef, completeProfile);
+        activateProfile({ ...completeProfile, createdAt: new Date(), updatedAt: new Date() });
+      } catch (error) {
+        console.error("SHOPX sign-in/profile setup failed:", error);
+        setAuthError(`Sign-in or profile setup failed: ${error.message}`);
+      } finally {
+        button.disabled = false;
+        buttonText.textContent = currentUser ? "Save profile & continue" : "Continue with Google";
+      }
+    });
+
+    setPersistence(auth, browserLocalPersistence).then(() => onAuthStateChanged(auth, async user => {
+      currentUser = user;
+      if (!user) {
+        userProfile = null;
+        products = [];
+        buyerOrders.splice(0);
+        sellerOrders.splice(0);
+        cart.clear();
+        if (unsubscribeProducts) unsubscribeProducts();
+        unsubscribeProducts = null;
+        if (unsubscribeBuyerOrders) unsubscribeBuyerOrders();
+        if (unsubscribeSellerOrders) unsubscribeSellerOrders();
+        unsubscribeBuyerOrders = null;
+        unsubscribeSellerOrders = null;
+        for (const unsubscribe of unsubscribeReviews.values()) unsubscribe();
+        unsubscribeReviews.clear();
+        reviewsByProduct.clear();
+        document.body.classList.remove("signed-in");
+        authGate.hidden = false;
+        document.getElementById("yourProductsButton").hidden = true;
+        document.getElementById("sellerOrdersButton").hidden = true;
+        document.getElementById("buyerOrdersButton").hidden = true;
+        document.getElementById("profileName").value = "";
+        document.getElementById("profilePhone").value = "";
+        document.getElementById("profileAddress").value = "";
+        document.querySelectorAll('input[name="role"]').forEach(input => { input.checked = false; });
+        document.getElementById("googleButtonText").textContent = "Continue with Google";
+        setAuthError("");
+        renderCart();
+        return;
+      }
+      try {
+        const profileSnapshot = await getDoc(doc(db, "users", user.uid));
+        if (profileSnapshot.exists()) {
+          activateProfile(profileSnapshot.data());
+          return;
+        }
+        const nameInput = document.getElementById("profileName");
+        if (!nameInput.value.trim() && user.displayName) nameInput.value = user.displayName;
+        const legacySnapshot = await getDoc(doc(db, "profiles", user.uid));
+        if (legacySnapshot.exists()) {
+          const legacy = legacySnapshot.data();
+          if (!nameInput.value.trim() && legacy.name) nameInput.value = legacy.name;
+          if (!document.getElementById("profilePhone").value.trim() && legacy.phone) {
+            document.getElementById("profilePhone").value = legacy.phone;
+          }
+          if (!document.getElementById("profileAddress").value.trim() && legacy.address) {
+            document.getElementById("profileAddress").value = legacy.address;
+          }
+        }
+        showAuthGate("");
+        document.getElementById("googleButtonText").textContent = "Save profile & continue";
+      } catch (error) {
+        console.error("SHOPX profile lookup failed:", error);
+        showAuthGate(`Your profile could not be loaded: ${error.message}`);
+      }
+    }, error => {
+      console.error("SHOPX authentication state failed:", error);
+      showAuthGate(`Authentication could not start: ${error.message}`);
+    })).catch(error => {
+      console.error("SHOPX authentication persistence setup failed:", error);
+      showAuthGate(`Authentication could not start: ${error.message}`);
+    });
+
+    document.getElementById("profileButton").addEventListener("click", event => {
+      const menu = document.getElementById("profileMenu");
+      const isOpen = menu.classList.toggle("open");
+      event.currentTarget.setAttribute("aria-expanded", String(isOpen));
+    });
+    document.addEventListener("click", event => {
+      if (event.target.closest("#profileMenu") || event.target.closest("#profileButton")) return;
+      document.getElementById("profileMenu").classList.remove("open");
+      document.getElementById("profileButton").setAttribute("aria-expanded", "false");
+    });
+    document.getElementById("signOutButton").addEventListener("click", async () => {
+      try {
+        await signOut(auth);
+        document.getElementById("profileMenu").classList.remove("open");
+      } catch (error) {
+        console.error("SHOPX sign-out failed:", error);
+        showToast(`Could not sign out: ${error.message}`);
+      }
+    });
+
+    function openSellerStudio() {
+      if (!roleCanSell()) return;
+      document.getElementById("profileMenu").classList.remove("open");
+      sellerBackdrop.classList.add("open");
+      sellerBackdrop.setAttribute("aria-hidden", "false");
+      document.body.classList.add("locked");
+      document.getElementById("closeSellerStudio").focus();
+      renderSellerProducts();
+    }
+
+    function closeSellerStudio() {
+      sellerBackdrop.classList.remove("open");
+      sellerBackdrop.setAttribute("aria-hidden", "true");
+      if (!cartDrawer.classList.contains("open") && !searchBackdrop.classList.contains("open")) {
+        document.body.classList.remove("locked");
+      }
+    }
+
+    document.getElementById("yourProductsButton").addEventListener("click", openSellerStudio);
+    document.getElementById("closeSellerStudio").addEventListener("click", closeSellerStudio);
+    sellerBackdrop.addEventListener("click", event => {
+      if (event.target === sellerBackdrop) closeSellerStudio();
+    });
+
+    document.querySelector('[name="image"]').addEventListener("change", event => {
+      const file = event.currentTarget.files[0];
+      const preview = document.getElementById("productImagePreview");
+      if (!file) {
+        if (preview.dataset.objectUrl) URL.revokeObjectURL(preview.dataset.objectUrl);
+        delete preview.dataset.objectUrl;
+        preview.removeAttribute("src");
+        preview.classList.remove("visible");
+        return;
+      }
+      if (!["image/jpeg", "image/png", "image/webp"].includes(file.type) || file.size > 5 * 1024 * 1024) {
+        event.currentTarget.value = "";
+        if (preview.dataset.objectUrl) URL.revokeObjectURL(preview.dataset.objectUrl);
+        delete preview.dataset.objectUrl;
+        preview.removeAttribute("src");
+        preview.classList.remove("visible");
+        setSellerError("Choose a JPG, PNG, or WebP image smaller than 5 MB.");
+        return;
+      }
+      setSellerError("");
+      if (preview.dataset.objectUrl) URL.revokeObjectURL(preview.dataset.objectUrl);
+      preview.dataset.objectUrl = URL.createObjectURL(file);
+      preview.src = preview.dataset.objectUrl;
+      preview.classList.add("visible");
+    });
+
+    document.getElementById("sellerProductForm").addEventListener("submit", async event => {
+      event.preventDefault();
+      setSellerError("");
+      if (!roleCanSell() || !currentUser) {
+        setSellerError("Only a signed-in seller can publish products.");
+        return;
+      }
+      const form = event.currentTarget;
+      const formData = new FormData(form);
+      const name = String(formData.get("name") || "").trim();
+      const category = String(formData.get("category") || "");
+      const description = String(formData.get("description") || "").trim();
+      const price = Number(formData.get("price"));
+      const stock = Number(formData.get("stock"));
+      const file = formData.get("image");
+      if (!name || !description || !["Fashion", "Tech", "Accessories", "Beauty"].includes(category) ||
+          !Number.isSafeInteger(price) || price < 1 || price > 10000000 ||
+          !Number.isSafeInteger(stock) || stock < 0 || stock > 1000000 ||
+          !(file instanceof File) || !file.size) {
+        setSellerError("Enter valid product details, a whole-number INR price, and an image.");
+        return;
+      }
+      if (!["image/jpeg", "image/png", "image/webp"].includes(file.type) || file.size > 5 * 1024 * 1024) {
+        setSellerError("Choose a JPG, PNG, or WebP image smaller than 5 MB.");
+        return;
+      }
+
+      const publishButton = document.getElementById("publishProductButton");
+      publishButton.disabled = true;
+      publishButton.textContent = "Uploading product…";
+      let uploadedImageRef = null;
+      try {
+        const productRef = doc(collection(db, "products"));
+        const extension = { "image/jpeg": "jpg", "image/png": "png", "image/webp": "webp" }[file.type];
+        const imagePath = `product-images/${currentUser.uid}/${productRef.id}-${Date.now()}.${extension}`;
+        uploadedImageRef = storageRef(storage, imagePath);
+        await uploadBytes(uploadedImageRef, file, { contentType: file.type });
+        const imageUrl = await getDownloadURL(uploadedImageRef);
+        await setDoc(productRef, {
+          name,
+          description,
+          category,
+          price,
+          stock,
+          imageUrl,
+          imagePath,
+          sellerId: currentUser.uid,
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp()
+        });
+        form.reset();
+        const preview = document.getElementById("productImagePreview");
+        if (preview.dataset.objectUrl) URL.revokeObjectURL(preview.dataset.objectUrl);
+        delete preview.dataset.objectUrl;
+        preview.removeAttribute("src");
+        preview.classList.remove("visible");
+        showToast("Your product is now listed on SHOPX.");
+      } catch (error) {
+        console.error("SHOPX product publishing failed:", error);
+        if (uploadedImageRef) {
+          try {
+            await deleteObject(uploadedImageRef);
+          } catch (cleanupError) {
+            console.error("SHOPX failed to clean up an unpublished product image:", cleanupError);
+          }
+        }
+        setSellerError(`Product could not be published: ${error.message}`);
+      } finally {
+        publishButton.disabled = false;
+        publishButton.textContent = "Upload image & publish product";
+      }
+    });
+
+    document.getElementById("sellerProducts").addEventListener("click", async event => {
+      const saveButton = event.target.closest("[data-save-price]");
+      const stockButton = event.target.closest("[data-save-stock]");
+      const deleteButton = event.target.closest("[data-delete-product]");
+      if (!saveButton && !stockButton && !deleteButton) return;
+      const productId = (saveButton || stockButton || deleteButton).dataset.savePrice ||
+        (saveButton || stockButton || deleteButton).dataset.saveStock ||
+        (saveButton || stockButton || deleteButton).dataset.deleteProduct;
+      const product = products.find(item => item.id === productId);
+      if (!product || product.sellerId !== currentUser?.uid) {
+        showToast("You can only manage products listed by your account.");
+        return;
+      }
+      try {
+        if (saveButton || stockButton) {
+          const actionButton = saveButton || stockButton;
+          const numberInputs = actionButton.closest(".seller-product").querySelectorAll('input[type="number"]');
+          const priceInput = numberInputs[0];
+          const stockInput = numberInputs[1];
+          const price = Number(priceInput.value);
+          const stock = Number(stockInput.value);
+          const updates = {};
+          if (saveButton && (!Number.isSafeInteger(price) || price < 1 || price > 10000000)) {
+            showToast("Enter a whole-number price between ₹1 and ₹1,00,00,000.");
+            return;
+          }
+          if (stockButton && (!Number.isSafeInteger(stock) || stock < 0 || stock > 1000000)) {
+            showToast("Enter a whole-number stock count from 0 to 10,00,000.");
+            return;
+          }
+          actionButton.disabled = true;
+          if (saveButton) updates.price = price;
+          if (stockButton) updates.stock = stock;
+          updates.updatedAt = serverTimestamp();
+          await updateDoc(doc(db, "products", productId), updates);
+          showToast(saveButton ? "Your product price has been updated." : "Your product stock has been updated.");
+        } else {
+          if (!window.confirm(`Remove "${product.name}" from SHOPX?`)) return;
+          deleteButton.disabled = true;
+          await deleteDoc(doc(db, "products", productId));
+          try {
+            await deleteObject(storageRef(storage, product.imagePath));
+          } catch (error) {
+            console.error("SHOPX product image cleanup failed:", error);
+            showToast(`Product removed, but its image could not be deleted: ${error.message}`);
+            return;
+          }
+          showToast("Your product has been removed.");
+        }
+      } catch (error) {
+        console.error("SHOPX seller product action failed:", error);
+        showToast(`Could not update your product: ${error.message}`);
+      } finally {
+        if (saveButton) saveButton.disabled = false;
+        if (stockButton) stockButton.disabled = false;
+        if (deleteButton) deleteButton.disabled = false;
+      }
+    });
 
     function openCart() {
       cartDrawer.classList.add("open");
@@ -532,26 +1643,41 @@
       cartDrawer.classList.remove("open");
       overlay.classList.remove("open");
       cartDrawer.setAttribute("aria-hidden", "true");
-      document.body.classList.remove("locked");
+      if (!searchBackdrop.classList.contains("open") && !sellerBackdrop.classList.contains("open")) {
+        document.body.classList.remove("locked");
+      }
     }
 
     productGrid.addEventListener("click", event => {
       const addButton = event.target.closest("[data-add]");
       const likeButton = event.target.closest("[data-wishlist]");
       if (addButton) {
-        const product = products.find(item => item.id === Number(addButton.dataset.add));
+        const product = products.find(item => item.id === addButton.dataset.add);
+        if (!product) return;
+        if (!roleCanBuy()) {
+          showToast("Buyer or both role is needed to shop.");
+          return;
+        }
+        const existingItem = cart.get(product.id);
+        if (product.stock <= 0 || (existingItem?.quantity || 0) >= product.stock) {
+          showToast("This product is out of stock.");
+          return;
+        }
         const item = cart.get(product.id) || { product, quantity: 0 };
         item.quantity += 1;
         cart.set(product.id, item);
         renderCart();
+        renderProducts(document.querySelector(".filter-button.active").dataset.filter, searchQuery);
         showToast(`${product.name} added to your bag`);
       }
       if (likeButton) {
-        const id = Number(likeButton.dataset.wishlist);
+        const id = likeButton.dataset.wishlist;
         wishlist.has(id) ? wishlist.delete(id) : wishlist.add(id);
         renderProducts(document.querySelector(".filter-button.active").dataset.filter, searchQuery);
         showToast(wishlist.has(id) ? "Saved to your wishlist" : "Removed from your wishlist");
       }
+      const reviewButton = event.target.closest("[data-review-product]");
+      if (reviewButton) openReview(reviewButton.dataset.reviewProduct);
     });
 
     document.querySelector(".filters").addEventListener("click", event => {
@@ -568,11 +1694,24 @@
     document.getElementById("cartItems").addEventListener("click", event => {
       const button = event.target.closest("[data-quantity]");
       if (!button) return;
-      const id = Number(button.dataset.quantity);
+      const id = button.dataset.quantity;
       const item = cart.get(id);
+      const latestProduct = products.find(product => product.id === id);
+      if (Number(button.dataset.delta) > 0 && (!latestProduct || item.quantity >= latestProduct.stock)) {
+        showToast("There isn't more stock available for this product.");
+        return;
+      }
       item.quantity += Number(button.dataset.delta);
       if (item.quantity <= 0) cart.delete(id);
       renderCart();
+      renderProducts(document.querySelector(".filter-button.active").dataset.filter, searchQuery);
+    });
+    document.getElementById("reviewForm").addEventListener("change", event => {
+      if (event.target.name !== "rating") return;
+      const selectedRating = Number(event.target.value);
+      document.querySelectorAll(".rating-options label").forEach((label, index) => {
+        label.classList.toggle("selected", index < selectedRating);
+      });
     });
     document.getElementById("cartButton").addEventListener("click", openCart);
     document.getElementById("closeCart").addEventListener("click", closeCart);
@@ -581,6 +1720,8 @@
       if (event.key === "Escape") {
         closeCart();
         closeSearch(false);
+        document.querySelectorAll(".dialog-backdrop.open").forEach(closeDialog);
+        closeSellerStudio();
       }
     });
 
@@ -603,10 +1744,10 @@
       suggestions.hidden = true;
       results.hidden = false;
       results.innerHTML = matches.length ? matches.slice(0, 5).map(product => `
-        <button class="search-result" type="button" data-search-product="${product.id}">
-          <img src="${productImage(product.image, 120)}" alt="">
-          <span><span class="search-result-name">${product.name}</span><span class="search-result-detail">${product.category} · ${product.detail}</span></span>
-          <span class="search-result-price">$${product.price}</span>
+        <button class="search-result" type="button" data-search-product="${escapeHtml(product.id)}">
+          <img src="${escapeHtml(product.imageUrl)}" alt="">
+          <span><span class="search-result-name">${escapeHtml(product.name)}</span><span class="search-result-detail">${escapeHtml(product.category)} · ${escapeHtml(product.detail)}</span></span>
+          <span class="search-result-price">${formatPrice(product.price)}</span>
         </button>
       `).join("") : '<p class="search-empty">Try another name or browse one of our popular searches.</p>';
     }
@@ -625,7 +1766,9 @@
       searchBackdrop.classList.remove("open");
       searchBackdrop.setAttribute("aria-hidden", "true");
       document.getElementById("searchButton").setAttribute("aria-expanded", "false");
-      document.body.classList.remove("locked");
+      if (!cartDrawer.classList.contains("open") && !sellerBackdrop.classList.contains("open")) {
+        document.body.classList.remove("locked");
+      }
       if (restoreFocus) document.getElementById("searchButton").focus();
     }
 
@@ -656,9 +1799,27 @@
     document.getElementById("searchResults").addEventListener("click", event => {
       const result = event.target.closest("[data-search-product]");
       if (!result) return;
-      const product = products.find(item => item.id === Number(result.dataset.searchProduct));
+      const product = products.find(item => item.id === result.dataset.searchProduct);
+      if (!product) return;
       applySearch(product.name);
     });
+    document.getElementById("checkoutButton").addEventListener("click", openCheckout);
+    document.getElementById("checkoutForm").addEventListener("submit", placeCodOrder);
+    document.getElementById("showAddAddress").addEventListener("click", () => {
+      document.getElementById("newAddressFields").hidden = false;
+      document.getElementById("newAddressLabel").focus();
+    });
+    document.getElementById("saveNewAddress").addEventListener("click", saveCheckoutAddress);
+    document.getElementById("sellerOrdersButton").addEventListener("click", openSellerMailbox);
+    document.getElementById("buyerOrdersButton").addEventListener("click", openBuyerOrders);
+    document.getElementById("sellerOrderList").addEventListener("submit", acceptSellerOrder);
+    document.getElementById("reviewForm").addEventListener("submit", saveReview);
+    document.querySelectorAll("[data-close-dialog]").forEach(button => button.addEventListener("click", () => {
+      closeDialog(button.closest(".dialog-backdrop"));
+    }));
+    document.querySelectorAll(".dialog-backdrop").forEach(backdrop => backdrop.addEventListener("click", event => {
+      if (event.target === backdrop) closeDialog(backdrop);
+    }));
     document.getElementById("menuToggle").addEventListener("click", event => {
       const nav = document.getElementById("navLinks");
       const isOpen = nav.classList.toggle("open");
@@ -673,11 +1834,6 @@
       event.currentTarget.reset();
       showToast("You're on the list. See you in your inbox.");
     });
-    document.getElementById("checkoutButton").addEventListener("click", () => {
-      showToast(cart.size ? "Checkout is ready to connect to your payment provider." : "Your bag is empty for now.");
-    });
-
-    renderProducts();
     renderCart();
   </script>
 </body>
