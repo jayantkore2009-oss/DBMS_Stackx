@@ -355,8 +355,10 @@
     .nav-sign-in { min-height: 32px; padding: 0 12px; border: 1px solid rgba(35,44,58,.16); border-radius: 20px; background: rgba(255,255,255,.65); color: #343b46; font-size: 9px; font-weight: 600; cursor: pointer; }
     .nav-sign-in:hover { background: #f0f2f5; }
     .nav-mailbox { display: inline-flex; align-items: center; gap: 7px; min-height: 32px; padding: 0 11px; border: 1px solid rgba(35,44,58,.14); border-radius: 20px; background: rgba(255,255,255,.64); color: #343b46; font-size: 9px; font-weight: 600; white-space: nowrap; cursor: pointer; }
+    .nav-mailbox { position: relative; }
     .nav-mailbox:hover { background: #f0f2f5; }
     .nav-mailbox svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.5; }
+    .mailbox-new-dot { position: absolute; top: -3px; right: -3px; width: 10px; height: 10px; border: 2px solid #fff; border-radius: 50%; background: #dc3545; box-shadow: 0 1px 5px rgba(120,20,30,.35); }
     .nav-mailbox[hidden], .order-hub-button[hidden] { display: none !important; }
     .profile-menu { position: absolute; z-index: 25; top: calc(100% - 2px); right: 5.5%; display: none; width: min(290px,calc(100vw - 28px)); padding: 17px; border: 1px solid rgba(255,255,255,.9); border-radius: 13px; background: rgba(255,255,255,.92); box-shadow: 0 16px 50px rgba(27,36,50,.14); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
     .profile-menu.open { display: block; }
@@ -584,6 +586,7 @@
       <button class="nav-mailbox" id="headerMailboxButton" type="button" aria-label="Open seller mailbox" hidden>
         <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></svg>
         <span>Mailbox</span><span class="pending-badge" id="headerPendingOrderCount">0</span>
+        <span class="mailbox-new-dot" id="mailboxNewDot" aria-label="New orders" hidden></span>
       </button>
       <button class="nav-sign-in" id="navSignInButton" type="button">Sign in with Google</button>
       <button class="profile-action" id="profileButton" aria-label="Open your profile" aria-expanded="false" hidden></button>
@@ -772,6 +775,9 @@
     let cartCheckoutBusy = false;
     const buyerOrders = [];
     const sellerOrders = [];
+    let knownSellerOrderIds = new Set();
+    let unseenSellerOrderIds = new Set();
+    let mailboxStateInitialized = false;
     const reviewsByProduct = new Map();
     const unsubscribeReviews = new Map();
     let toastTimer;
@@ -926,11 +932,87 @@
         : '<article class="order-card order-empty-card"><h3>📬 Seller Mailbox</h3><p>No incoming customer orders yet. When a buyer places an order, it will appear here for you to accept and set a delivery date.</p></article>'}${processed.map(order => renderOrderCard(order, { seller: true })).join("")}`;
     }
 
+    function mailboxStateKey() {
+      return currentUser ? `shopx-mailbox-state:${currentUser.uid}` : "";
+    }
+
+    function loadMailboxState() {
+      knownSellerOrderIds = new Set();
+      unseenSellerOrderIds = new Set();
+      mailboxStateInitialized = false;
+      const key = mailboxStateKey();
+      if (!key) return;
+      try {
+        const stored = localStorage.getItem(key);
+        if (!stored) return;
+        const state = JSON.parse(stored);
+        if (!Array.isArray(state.knownOrderIds) || !Array.isArray(state.unseenOrderIds)) {
+          throw new Error("Saved mailbox notification state is invalid.");
+        }
+        knownSellerOrderIds = new Set(state.knownOrderIds.filter(id => typeof id === "string"));
+        unseenSellerOrderIds = new Set(state.unseenOrderIds.filter(id => typeof id === "string"));
+        mailboxStateInitialized = true;
+      } catch (error) {
+        console.error("SHOPX mailbox notification state could not be loaded:", error);
+      }
+    }
+
+    function saveMailboxState() {
+      const key = mailboxStateKey();
+      if (!key) return;
+      try {
+        localStorage.setItem(key, JSON.stringify({
+          knownOrderIds: [...knownSellerOrderIds],
+          unseenOrderIds: [...unseenSellerOrderIds]
+        }));
+      } catch (error) {
+        console.error("SHOPX mailbox notification state could not be saved:", error);
+      }
+    }
+
+    function updateMailboxNotification() {
+      if (!currentUser || !roleCanSell()) return;
+      const currentIds = new Set(sellerOrders.map(order => order.id));
+      const mailboxIsOpen = document.getElementById("mailboxBackdrop")?.classList.contains("open");
+      if (mailboxIsOpen) {
+        knownSellerOrderIds = currentIds;
+        unseenSellerOrderIds.clear();
+        mailboxStateInitialized = true;
+      } else if (!mailboxStateInitialized) {
+        knownSellerOrderIds = currentIds;
+        unseenSellerOrderIds.clear();
+        mailboxStateInitialized = true;
+      } else {
+        for (const order of sellerOrders) {
+          if (order.status === "Pending Acceptance" && !knownSellerOrderIds.has(order.id)) {
+            unseenSellerOrderIds.add(order.id);
+          }
+        }
+        knownSellerOrderIds = currentIds;
+      }
+      for (const id of unseenSellerOrderIds) {
+        if (!currentIds.has(id)) unseenSellerOrderIds.delete(id);
+      }
+      const dot = document.getElementById("mailboxNewDot");
+      if (dot) dot.hidden = unseenSellerOrderIds.size === 0;
+      const mailboxButton = document.getElementById("headerMailboxButton");
+      if (mailboxButton) mailboxButton.setAttribute("aria-label", unseenSellerOrderIds.size ? "Open seller mailbox, new orders" : "Open seller mailbox");
+      saveMailboxState();
+    }
+
+    function markMailboxOrdersSeen() {
+      knownSellerOrderIds = new Set(sellerOrders.map(order => order.id));
+      unseenSellerOrderIds.clear();
+      mailboxStateInitialized = true;
+      updateMailboxNotification();
+    }
+
     function subscribeToOrders() {
       if (unsubscribeBuyerOrders) unsubscribeBuyerOrders();
       if (unsubscribeSellerOrders) unsubscribeSellerOrders();
       buyerOrders.splice(0);
       sellerOrders.splice(0);
+      loadMailboxState();
       renderBuyerOrders();
       renderSellerOrders();
       try {
@@ -960,10 +1042,12 @@
             snapshot => {
               if (snapshot.empty) {
                 sellerOrders.splice(0);
+                updateMailboxNotification();
                 renderSellerOrders();
                 return;
               }
               sellerOrders.splice(0, sellerOrders.length, ...snapshot.docs.map(orderDoc => ({ id: orderDoc.id, ...orderDoc.data() })));
+              updateMailboxNotification();
               renderSellerOrders();
             },
             error => {
@@ -1153,6 +1237,7 @@
     function openSellerMailbox() {
       if (!currentUser || !roleCanSell() || !document.getElementById("mailboxBackdrop")) return;
       renderSellerOrders();
+      markMailboxOrdersSeen();
       openDialog("mailboxBackdrop");
     }
 
@@ -1570,6 +1655,11 @@
         document.getElementById("navSignInButton").hidden = false;
         document.getElementById("headerMailboxButton").hidden = true;
         document.getElementById("headerPendingOrderCount").textContent = "0";
+        document.getElementById("mailboxNewDot").hidden = true;
+        document.getElementById("headerMailboxButton").setAttribute("aria-label", "Open seller mailbox");
+        knownSellerOrderIds.clear();
+        unseenSellerOrderIds.clear();
+        mailboxStateInitialized = false;
         document.getElementById("profileMenu").classList.remove("open");
         document.getElementById("profileButton").setAttribute("aria-expanded", "false");
         document.getElementById("yourProductsButton").hidden = true;
