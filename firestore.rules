@@ -70,9 +70,13 @@ service cloud.firestore {
         && data.stock >= 0
         && data.stock <= 1000000
         && data.imageUrl is string
-        && data.imageUrl.matches('https://firebasestorage.googleapis.com/.*')
         && data.imagePath is string
-        && data.imagePath.matches('product-images/' + request.auth.uid + '/[^/]+')
+        && ((data.imageUrl.size() <= 1000000
+            && data.imageUrl.matches('data:image/(jpeg|png|webp);base64,[A-Za-z0-9+/]+=*')
+            && data.imagePath == 'inline/base64')
+          || (data.imageUrl
+            == 'https://images.unsplash.com/photo-1498049794561-7780e7231661?auto=format&fit=crop&w=1200&q=88'
+            && data.imagePath == 'placeholder/default-product.png'))
         && data.sellerId == request.auth.uid
         && data.createdAt is timestamp
         && data.updatedAt is timestamp;

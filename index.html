@@ -386,6 +386,10 @@
     .seller-product-title strong { overflow: hidden; font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
     .seller-product-title span { flex: 0 0 auto; color: #7c8491; font-size: 9px; }
     .seller-price-form { display: flex; align-items: center; gap: 7px; }
+    .seller-price-form .stock-stepper { display: inline-flex; align-items: center; gap: 4px; }
+    .seller-price-form .stock-stepper label { width: 100px; }
+    .seller-price-form .stock-stepper button { width: 27px; min-width: 27px; padding: 0; font-size: 13px; }
+    .seller-price-form button:disabled { opacity: .5; cursor: not-allowed; }
     .seller-price-form label { display: flex; align-items: center; gap: 6px; width: 132px; padding: 0 8px; border: 1px solid #e2e5ea; border-radius: 6px; color: #657083; font-size: 10px; }
     .seller-price-form input { width: 100%; height: 32px; border: 0; outline: 0; background: transparent; color: #303640; font-size: 10px; }
     .seller-price-form button, .seller-delete { min-height: 32px; padding: 0 9px; border: 1px solid #e2e5ea; border-radius: 6px; background: white; color: #37404c; font-size: 9px; cursor: pointer; }
@@ -522,16 +526,18 @@
         </section>
       </div>
       <form id="authForm">
-        <label class="auth-field"><span>Your name</span><input id="profileName" name="name" type="text" autocomplete="name" maxlength="80" required placeholder="Enter your full name"></label>
-        <label class="auth-field"><span>Mobile number</span><input id="profilePhone" name="phone" type="tel" autocomplete="tel" inputmode="tel" maxlength="20" required placeholder="+91 98765 43210"></label>
-        <label class="auth-field"><span>Address</span><textarea id="profileAddress" name="address" autocomplete="street-address" maxlength="300" required placeholder="House / street, city, state, PIN code"></textarea></label>
-        <span class="role-title">How will you use SHOPX?</span>
-        <div class="role-options">
-          <label class="role-option"><input type="radio" name="role" value="buyer" required><span>I'm a buyer<small>Browse and shop products</small></span></label>
-          <label class="role-option"><input type="radio" name="role" value="seller" required><span>I'm a seller<small>List and manage my products</small></span></label>
-          <label class="role-option"><input type="radio" name="role" value="both" required><span>Both<small>Shop and sell on SHOPX</small></span></label>
+        <div id="profileOnboardingFields" hidden>
+          <label class="auth-field"><span>Your name</span><input id="profileName" name="name" type="text" autocomplete="name" maxlength="80" placeholder="Enter your full name"></label>
+          <label class="auth-field"><span>Mobile number</span><input id="profilePhone" name="phone" type="tel" autocomplete="tel" inputmode="tel" maxlength="20" placeholder="+91 98765 43210"></label>
+          <label class="auth-field"><span>Default address</span><textarea id="profileAddress" name="address" autocomplete="street-address" maxlength="300" placeholder="House / street, city, state, PIN code"></textarea></label>
+          <span class="role-title">How will you use SHOPX?</span>
+          <div class="role-options">
+            <label class="role-option"><input type="radio" name="role" value="buyer"><span>I'm a buyer<small>Browse and shop products</small></span></label>
+            <label class="role-option"><input type="radio" name="role" value="seller"><span>I'm a seller<small>List and manage my products</small></span></label>
+            <label class="role-option"><input type="radio" name="role" value="both"><span>Both<small>Shop and sell on SHOPX</small></span></label>
+          </div>
         </div>
-        <button class="google-button" id="googleSignInButton" type="submit"><span class="google-mark" aria-hidden="true">G</span><span id="googleButtonText">Continue with Google</span></button>
+        <button class="google-button" id="googleSignInButton" type="submit"><span class="google-mark" aria-hidden="true">G</span><span id="googleButtonText">Sign in with Google</span></button>
         <p class="auth-error" id="authError" role="alert"></p>
         <p class="auth-note">Your profile details are private. Sign in securely with your Google account.</p>
       </form>
@@ -679,7 +685,7 @@
             <label class="seller-field"><span>Category</span><select name="category" required><option value="">Choose a category</option><option>Fashion</option><option>Tech</option><option>Accessories</option><option>Beauty</option></select></label>
             <label class="seller-field"><span>Price (INR)</span><input name="price" type="number" min="1" max="10000000" step="1" required placeholder="2500"></label>
             <label class="seller-field"><span>Available stock</span><input name="stock" type="number" min="0" max="1000000" step="1" required placeholder="10"></label>
-            <label class="seller-field"><span>Product image</span><input name="image" type="file" accept="image/jpeg,image/png,image/webp" required></label>
+            <label class="seller-field"><span>Product image (optional, max 700 KB)</span><input name="image" type="file" accept="image/jpeg,image/png,image/webp"><small>Images are saved directly in Firestore. If omitted, a SHOPX placeholder is used.</small></label>
             <label class="seller-field full"><span>Description</span><textarea name="description" maxlength="240" required placeholder="Describe the product"></textarea></label>
           </div>
           <img class="image-preview" id="productImagePreview" alt="Selected product image preview">
@@ -704,13 +710,11 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
     import { browserLocalPersistence, getAuth, GoogleAuthProvider, onAuthStateChanged, setPersistence, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
     import { arrayUnion, collection, deleteDoc, doc, getDoc, getFirestore, onSnapshot, orderBy, query, runTransaction, serverTimestamp, setDoc, Timestamp, updateDoc, where } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
-    import { deleteObject, getDownloadURL, getStorage, ref as storageRef, uploadBytes } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyBzWj8O41IUaOe0KzEpMZriMKiUfeBMckI",
       authDomain: "shopx-921b7.firebaseapp.com",
       projectId: "shopx-921b7",
-      storageBucket: "shopx-921b7.firebasestorage.app",
       messagingSenderId: "745762319208",
       appId: "1:745762319208:web:952b9d1b73b8f9f85404dd",
       measurementId: "G-NV9N13LX47"
@@ -719,9 +723,9 @@
     const auth = getAuth(firebaseApp);
     const googleProvider = new GoogleAuthProvider();
     const db = getFirestore(firebaseApp);
-    const storage = getStorage(firebaseApp);
 
     let products = [];
+    let sellerListings = [];
     const cart = new Map();
     const wishlist = new Set();
     const productGrid = document.getElementById("productGrid");
@@ -734,6 +738,7 @@
     let currentUser = null;
     let userProfile = null;
     let unsubscribeProducts = null;
+    let unsubscribeSellerProducts = null;
     let unsubscribeBuyerOrders = null;
     let unsubscribeSellerOrders = null;
     let activeReviewProductId = null;
@@ -744,6 +749,8 @@
     const unsubscribeReviews = new Map();
     let toastTimer;
     let searchQuery = "";
+    const DEFAULT_PRODUCT_IMAGE = "https://images.unsplash.com/photo-1498049794561-7780e7231661?auto=format&fit=crop&w=1200&q=88";
+    const DEFAULT_PRODUCT_IMAGE_PATH = "placeholder/default-product.png";
 
     const inrFormatter = new Intl.NumberFormat("en-IN", {
       style: "currency",
@@ -868,7 +875,7 @@
       const sorted = [...buyerOrders].sort((a, b) => (b.createdAt?.toMillis?.() || 0) - (a.createdAt?.toMillis?.() || 0));
       list.innerHTML = sorted.length
         ? sorted.map(order => renderOrderCard(order)).join("")
-        : '<p class="order-empty">No orders yet. Your COD purchases will appear here.</p>';
+        : '<p class="order-empty">📦 No orders placed yet. Start browsing products to place an order!</p>';
     }
 
     function renderSellerOrders() {
@@ -876,9 +883,11 @@
       document.getElementById("pendingOrderCount").textContent = pendingCount;
       const list = document.getElementById("sellerOrderList");
       const sorted = [...sellerOrders].sort((a, b) => (b.createdAt?.toMillis?.() || 0) - (a.createdAt?.toMillis?.() || 0));
-      list.innerHTML = sorted.length
-        ? sorted.map(order => renderOrderCard(order, { seller: true })).join("")
-        : '<p class="order-empty">No orders for your products yet.</p>';
+      const pending = sorted.filter(order => order.status === "Pending Acceptance");
+      const processed = sorted.filter(order => order.status !== "Pending Acceptance");
+      list.innerHTML = `${pending.length
+        ? pending.map(order => renderOrderCard(order, { seller: true })).join("")
+        : '<p class="order-empty">📬 No customer orders yet. When a buyer places an order, it will appear here for your approval.</p>'}${processed.map(order => renderOrderCard(order, { seller: true })).join("")}`;
     }
 
     function subscribeToOrders() {
@@ -916,13 +925,19 @@
 
     function openDialog(id) {
       const backdrop = document.getElementById(id);
+      if (!currentUser || !backdrop) {
+        if (!currentUser) showToast("Sign in to access this feature.");
+        return false;
+      }
       backdrop.classList.add("open");
       backdrop.setAttribute("aria-hidden", "false");
       document.body.classList.add("locked");
       backdrop.querySelector("button, input, textarea")?.focus();
+      return true;
     }
 
     function closeDialog(backdrop) {
+      if (!backdrop) return;
       backdrop.classList.remove("open");
       backdrop.setAttribute("aria-hidden", "true");
       const anotherDialogOpen = document.querySelector(".dialog-backdrop.open, .seller-backdrop.open, .cart-drawer.open, .search-backdrop.open");
@@ -957,6 +972,10 @@
     }
 
     async function saveCheckoutAddress() {
+      if (!currentUser || !userProfile) {
+        document.getElementById("checkoutError").textContent = "Sign in before saving a delivery address.";
+        return;
+      }
       const labelInput = document.getElementById("newAddressLabel");
       const textInput = document.getElementById("newAddressText");
       const label = labelInput.value.trim();
@@ -1062,14 +1081,14 @@
     }
 
     function openBuyerOrders() {
-      if (!roleCanBuy()) return;
+      if (!currentUser || !roleCanBuy() || !document.getElementById("ordersBackdrop")) return;
       document.getElementById("profileMenu").classList.remove("open");
       renderBuyerOrders();
       openDialog("ordersBackdrop");
     }
 
     function openSellerMailbox() {
-      if (!roleCanSell()) return;
+      if (!currentUser || !roleCanSell() || !document.getElementById("mailboxBackdrop")) return;
       document.getElementById("profileMenu").classList.remove("open");
       renderSellerOrders();
       openDialog("mailboxBackdrop");
@@ -1236,13 +1255,16 @@
     }
 
     function renderSellerProducts() {
-      const sellerProducts = products.filter(product => product.sellerId === currentUser?.uid);
       const container = document.getElementById("sellerProducts");
-      if (!sellerProducts.length) {
+      if (!currentUser || !roleCanSell()) {
+        container.innerHTML = '<p class="seller-empty">Sign in with a seller profile to manage your listings.</p>';
+        return;
+      }
+      if (!sellerListings.length) {
         container.innerHTML = '<p class="seller-empty">You have not listed any products yet. Add your first product above.</p>';
         return;
       }
-      container.innerHTML = sellerProducts.map(product => `
+      container.innerHTML = sellerListings.map(product => `
         <article class="seller-product" data-seller-product="${escapeHtml(product.id)}">
           <img src="${escapeHtml(product.imageUrl)}" alt="${escapeHtml(product.name)}">
           <div class="seller-product-main">
@@ -1250,7 +1272,7 @@
             <div class="seller-price-form">
               <label>₹ <input type="number" min="1" max="10000000" step="1" value="${escapeHtml(product.price)}" aria-label="Price for ${escapeHtml(product.name)}"></label>
               <button type="button" data-save-price="${escapeHtml(product.id)}">Save price</button>
-              <label>Stock <input type="number" min="0" max="1000000" step="1" value="${escapeHtml(product.stock)}" aria-label="Stock for ${escapeHtml(product.name)}"></label>
+              <span class="stock-stepper"><button type="button" data-stock-step="-1" data-product-id="${escapeHtml(product.id)}" aria-label="Decrease stock for ${escapeHtml(product.name)}" ${product.stock <= 0 ? "disabled" : ""}>−</button><label>Stock <input type="number" min="0" max="1000000" step="1" value="${escapeHtml(product.stock)}" aria-label="Stock for ${escapeHtml(product.name)}"></label><button type="button" data-stock-step="1" data-product-id="${escapeHtml(product.id)}" aria-label="Increase stock for ${escapeHtml(product.name)}">+</button></span>
               <button type="button" data-save-stock="${escapeHtml(product.id)}">Save stock</button>
               <button class="seller-delete" type="button" data-delete-product="${escapeHtml(product.id)}">Remove</button>
             </div>
@@ -1259,29 +1281,35 @@
       `).join("");
     }
 
+    function mapProductDocument(productDoc) {
+      const data = productDoc.data();
+      return {
+        id: productDoc.id,
+        name: data.name,
+        detail: data.description,
+        category: data.category,
+        price: data.price,
+        stock: Number.isSafeInteger(data.stock) ? data.stock : 0,
+        imageUrl: data.imageUrl || DEFAULT_PRODUCT_IMAGE,
+        imagePath: data.imagePath || DEFAULT_PRODUCT_IMAGE_PATH,
+        sellerId: data.sellerId,
+        createdAt: data.createdAt
+      };
+    }
+
     function activateProfile(profile) {
       userProfile = profile;
       document.body.classList.add("signed-in");
       authGate.hidden = true;
+      document.getElementById("profileOnboardingFields").hidden = true;
       renderProfile(profile);
       renderProducts(document.querySelector(".filter-button.active").dataset.filter, searchQuery);
       if (unsubscribeProducts) unsubscribeProducts();
+      if (unsubscribeSellerProducts) unsubscribeSellerProducts();
+      unsubscribeSellerProducts = null;
       unsubscribeProducts = onSnapshot(collection(db, "products"), snapshot => {
-        products = snapshot.docs.map(productDoc => {
-          const data = productDoc.data();
-          return {
-            id: productDoc.id,
-            name: data.name,
-            detail: data.description,
-            category: data.category,
-            price: data.price,
-            stock: Number.isSafeInteger(data.stock) ? data.stock : 0,
-            imageUrl: data.imageUrl,
-            imagePath: data.imagePath,
-            sellerId: data.sellerId,
-            createdAt: data.createdAt
-          };
-        }).sort((a, b) => (b.createdAt?.toMillis?.() || 0) - (a.createdAt?.toMillis?.() || 0));
+        products = snapshot.docs.map(mapProductDocument)
+          .sort((a, b) => (b.createdAt?.toMillis?.() || 0) - (a.createdAt?.toMillis?.() || 0));
         for (const [productId, item] of cart) {
           const latestProduct = products.find(product => product.id === productId);
           if (latestProduct) item.product = latestProduct;
@@ -1289,13 +1317,31 @@
         }
         renderProducts(document.querySelector(".filter-button.active").dataset.filter, searchQuery);
         renderCart();
-        renderSellerProducts();
         updateSearchResults(searchInput.value);
         syncProductReviews();
       }, error => {
         console.error("SHOPX product subscription failed:", error);
         showToast(`Products could not be loaded: ${error.message}`);
       });
+      if (roleCanSell()) {
+        unsubscribeSellerProducts = onSnapshot(
+          query(collection(db, "products"), where("sellerId", "==", currentUser.uid)),
+          snapshot => {
+            sellerListings = snapshot.docs.map(mapProductDocument)
+              .sort((a, b) => (b.createdAt?.toMillis?.() || 0) - (a.createdAt?.toMillis?.() || 0));
+            renderSellerProducts();
+          },
+          error => {
+            console.error("SHOPX seller listings could not be loaded:", error);
+            document.getElementById("sellerProducts").innerHTML =
+              `<p class="seller-empty">Your listings could not be loaded: ${escapeHtml(error.message)}</p>`;
+            showToast(`Your listings could not be loaded: ${error.message}`);
+          }
+        );
+      } else {
+        sellerListings = [];
+        renderSellerProducts();
+      }
       subscribeToOrders();
     }
 
@@ -1304,37 +1350,39 @@
       setAuthError("");
       const button = document.getElementById("googleSignInButton");
       const buttonText = document.getElementById("googleButtonText");
-      const form = event.currentTarget;
-      const role = form.querySelector('input[name="role"]:checked')?.value;
-      const profile = {
-        name: document.getElementById("profileName").value.trim(),
-        phone: document.getElementById("profilePhone").value.trim(),
-        address: document.getElementById("profileAddress").value.trim(),
-        role
-      };
-      if (!["buyer", "seller", "both"].includes(role) || !profile.name || profile.name.length > 80 ||
-          !profile.phone || profile.phone.length > 20 || !profile.address || profile.address.length > 300) {
-        setAuthError("Please complete your details and choose buyer, seller, or both.");
-        return;
-      }
-      if (!/^\+?[0-9][0-9() .-]{5,18}[0-9]$/.test(profile.phone)) {
-        setAuthError("Enter a valid mobile number, including its country code if needed.");
-        return;
-      }
-
       button.disabled = true;
-      buttonText.textContent = "Connecting securely…";
+      buttonText.textContent = currentUser ? "Saving your profile…" : "Signing in with Google…";
       try {
         if (!currentUser) {
-          const credential = await signInWithPopup(auth, googleProvider);
-          currentUser = credential.user;
+          await signInWithPopup(auth, googleProvider);
+          return;
         }
+
         const profileRef = doc(db, "users", currentUser.uid);
         const existingProfile = await getDoc(profileRef);
         if (existingProfile.exists()) {
           activateProfile(existingProfile.data());
           return;
         }
+
+        const form = event.currentTarget;
+        const role = form.querySelector('input[name="role"]:checked')?.value;
+        const profile = {
+          name: document.getElementById("profileName").value.trim(),
+          phone: document.getElementById("profilePhone").value.trim(),
+          address: document.getElementById("profileAddress").value.trim(),
+          role
+        };
+        if (!["buyer", "seller", "both"].includes(role) || !profile.name || profile.name.length > 80 ||
+            !profile.phone || profile.phone.length > 20 || !profile.address || profile.address.length > 300) {
+          setAuthError("Complete your name, mobile number, default address, and account role.");
+          return;
+        }
+        if (!/^\+?[0-9][0-9() .-]{5,18}[0-9]$/.test(profile.phone)) {
+          setAuthError("Enter a valid mobile number, including its country code if needed.");
+          return;
+        }
+
         const legacyProfileSnapshot = await getDoc(doc(db, "profiles", currentUser.uid));
         const legacyProfile = legacyProfileSnapshot.exists() ? legacyProfileSnapshot.data() : null;
         const initialAddress = {
@@ -1362,7 +1410,9 @@
         setAuthError(`Sign-in or profile setup failed: ${error.message}`);
       } finally {
         button.disabled = false;
-        buttonText.textContent = currentUser ? "Save profile & continue" : "Continue with Google";
+        buttonText.textContent = currentUser
+          ? (userProfile ? "Signed in with Google" : "Create profile & continue")
+          : "Sign in with Google";
       }
     });
 
@@ -1371,11 +1421,14 @@
       if (!user) {
         userProfile = null;
         products = [];
+        sellerListings = [];
         buyerOrders.splice(0);
         sellerOrders.splice(0);
         cart.clear();
         if (unsubscribeProducts) unsubscribeProducts();
+        if (unsubscribeSellerProducts) unsubscribeSellerProducts();
         unsubscribeProducts = null;
+        unsubscribeSellerProducts = null;
         if (unsubscribeBuyerOrders) unsubscribeBuyerOrders();
         if (unsubscribeSellerOrders) unsubscribeSellerOrders();
         unsubscribeBuyerOrders = null;
@@ -1385,6 +1438,7 @@
         reviewsByProduct.clear();
         document.body.classList.remove("signed-in");
         authGate.hidden = false;
+        document.getElementById("profileOnboardingFields").hidden = true;
         document.getElementById("yourProductsButton").hidden = true;
         document.getElementById("sellerOrdersButton").hidden = true;
         document.getElementById("buyerOrdersButton").hidden = true;
@@ -1392,7 +1446,7 @@
         document.getElementById("profilePhone").value = "";
         document.getElementById("profileAddress").value = "";
         document.querySelectorAll('input[name="role"]').forEach(input => { input.checked = false; });
-        document.getElementById("googleButtonText").textContent = "Continue with Google";
+        document.getElementById("googleButtonText").textContent = "Sign in with Google";
         setAuthError("");
         renderCart();
         return;
@@ -1401,8 +1455,11 @@
         const profileSnapshot = await getDoc(doc(db, "users", user.uid));
         if (profileSnapshot.exists()) {
           activateProfile(profileSnapshot.data());
+          document.getElementById("googleButtonText").textContent = "Signed in with Google";
           return;
         }
+        const onboardingFields = document.getElementById("profileOnboardingFields");
+        onboardingFields.hidden = false;
         const nameInput = document.getElementById("profileName");
         if (!nameInput.value.trim() && user.displayName) nameInput.value = user.displayName;
         const legacySnapshot = await getDoc(doc(db, "profiles", user.uid));
@@ -1417,7 +1474,7 @@
           }
         }
         showAuthGate("");
-        document.getElementById("googleButtonText").textContent = "Save profile & continue";
+        document.getElementById("googleButtonText").textContent = "Create profile & continue";
       } catch (error) {
         console.error("SHOPX profile lookup failed:", error);
         showAuthGate(`Your profile could not be loaded: ${error.message}`);
@@ -1484,13 +1541,13 @@
         preview.classList.remove("visible");
         return;
       }
-      if (!["image/jpeg", "image/png", "image/webp"].includes(file.type) || file.size > 5 * 1024 * 1024) {
+      if (!["image/jpeg", "image/png", "image/webp"].includes(file.type) || file.size > 700 * 1024) {
         event.currentTarget.value = "";
         if (preview.dataset.objectUrl) URL.revokeObjectURL(preview.dataset.objectUrl);
         delete preview.dataset.objectUrl;
         preview.removeAttribute("src");
         preview.classList.remove("visible");
-        setSellerError("Choose a JPG, PNG, or WebP image smaller than 5 MB.");
+        setSellerError("Choose a JPG, PNG, or WebP image no larger than 700 KB.");
         return;
       }
       setSellerError("");
@@ -1499,6 +1556,38 @@
       preview.src = preview.dataset.objectUrl;
       preview.classList.add("visible");
     });
+
+    function readImageAsDataURL(file, timeoutMs = 20000) {
+      const reader = new FileReader();
+      return new Promise((resolve, reject) => {
+        let settled = false;
+        const finish = (callback, value) => {
+          if (settled) return;
+          settled = true;
+          clearTimeout(timeoutId);
+          callback(value);
+        };
+        const timeoutId = setTimeout(() => {
+          if (settled) return;
+          finish(reject, new Error("Reading the selected image timed out."));
+          reader.abort();
+        }, timeoutMs);
+        reader.onload = () => {
+          if (typeof reader.result !== "string" || !reader.result.startsWith("data:image/")) {
+            finish(reject, new Error("The selected image could not be converted."));
+            return;
+          }
+          finish(resolve, reader.result);
+        };
+        reader.onerror = () => finish(reject, reader.error || new Error("The selected image could not be read."));
+        reader.onabort = () => finish(reject, new Error("Reading the selected image was cancelled."));
+        try {
+          reader.readAsDataURL(file);
+        } catch (error) {
+          finish(reject, error);
+        }
+      });
+    }
 
     document.getElementById("sellerProductForm").addEventListener("submit", async event => {
       event.preventDefault();
@@ -1514,30 +1603,42 @@
       const description = String(formData.get("description") || "").trim();
       const price = Number(formData.get("price"));
       const stock = Number(formData.get("stock"));
-      const file = formData.get("image");
+      const selectedFile = formData.get("image");
+      const file = selectedFile instanceof File && selectedFile.size > 0 ? selectedFile : null;
       if (!name || !description || !["Fashion", "Tech", "Accessories", "Beauty"].includes(category) ||
           !Number.isSafeInteger(price) || price < 1 || price > 10000000 ||
-          !Number.isSafeInteger(stock) || stock < 0 || stock > 1000000 ||
-          !(file instanceof File) || !file.size) {
-        setSellerError("Enter valid product details, a whole-number INR price, and an image.");
+          !Number.isSafeInteger(stock) || stock < 0 || stock > 1000000) {
+        setSellerError("Enter valid product details and a whole-number INR price.");
         return;
       }
-      if (!["image/jpeg", "image/png", "image/webp"].includes(file.type) || file.size > 5 * 1024 * 1024) {
-        setSellerError("Choose a JPG, PNG, or WebP image smaller than 5 MB.");
+      if (file && (!["image/jpeg", "image/png", "image/webp"].includes(file.type) || file.size > 700 * 1024)) {
+        setSellerError("Choose a JPG, PNG, or WebP image no larger than 700 KB.");
         return;
       }
 
       const publishButton = document.getElementById("publishProductButton");
       publishButton.disabled = true;
-      publishButton.textContent = "Uploading product…";
-      let uploadedImageRef = null;
+      publishButton.textContent = "UPLOADING PRODUCT...";
+      let productCreated = false;
       try {
         const productRef = doc(collection(db, "products"));
-        const extension = { "image/jpeg": "jpg", "image/png": "png", "image/webp": "webp" }[file.type];
-        const imagePath = `product-images/${currentUser.uid}/${productRef.id}-${Date.now()}.${extension}`;
-        uploadedImageRef = storageRef(storage, imagePath);
-        await uploadBytes(uploadedImageRef, file, { contentType: file.type });
-        const imageUrl = await getDownloadURL(uploadedImageRef);
+        let imageUrl = DEFAULT_PRODUCT_IMAGE;
+        let imagePath = DEFAULT_PRODUCT_IMAGE_PATH;
+        let imageUploadWarning = "";
+        if (file instanceof File && file.size > 0) {
+          try {
+            imageUrl = await readImageAsDataURL(file);
+            imagePath = "inline/base64";
+          } catch (error) {
+            console.error("SHOPX product image conversion failed; using the fallback image:", error);
+            imageUrl = DEFAULT_PRODUCT_IMAGE;
+            imagePath = DEFAULT_PRODUCT_IMAGE_PATH;
+            imageUploadWarning = `The image could not be read (${error.message}). This listing will use the SHOPX placeholder image.`;
+            showToast(imageUploadWarning);
+          }
+        } else {
+          imageUploadWarning = "No image was selected. This listing will use the SHOPX placeholder image.";
+        }
         await setDoc(productRef, {
           name,
           description,
@@ -1550,43 +1651,58 @@
           createdAt: serverTimestamp(),
           updatedAt: serverTimestamp()
         });
+        productCreated = true;
         form.reset();
         const preview = document.getElementById("productImagePreview");
         if (preview.dataset.objectUrl) URL.revokeObjectURL(preview.dataset.objectUrl);
         delete preview.dataset.objectUrl;
         preview.removeAttribute("src");
         preview.classList.remove("visible");
-        showToast("Your product is now listed on SHOPX.");
+        showToast(imageUploadWarning ? "Product listed with the SHOPX placeholder image." : "Your product is now listed on SHOPX.");
       } catch (error) {
         console.error("SHOPX product publishing failed:", error);
-        if (uploadedImageRef) {
-          try {
-            await deleteObject(uploadedImageRef);
-          } catch (cleanupError) {
-            console.error("SHOPX failed to clean up an unpublished product image:", cleanupError);
-          }
-        }
         setSellerError(`Product could not be published: ${error.message}`);
       } finally {
         publishButton.disabled = false;
-        publishButton.textContent = "Upload image & publish product";
+        publishButton.textContent = "List Product";
       }
+      if (productCreated) window.alert("Product Added Successfully!");
     });
 
     document.getElementById("sellerProducts").addEventListener("click", async event => {
+      const stockStepButton = event.target.closest("[data-stock-step]");
       const saveButton = event.target.closest("[data-save-price]");
       const stockButton = event.target.closest("[data-save-stock]");
       const deleteButton = event.target.closest("[data-delete-product]");
-      if (!saveButton && !stockButton && !deleteButton) return;
-      const productId = (saveButton || stockButton || deleteButton).dataset.savePrice ||
-        (saveButton || stockButton || deleteButton).dataset.saveStock ||
-        (saveButton || stockButton || deleteButton).dataset.deleteProduct;
-      const product = products.find(item => item.id === productId);
+      if (!stockStepButton && !saveButton && !stockButton && !deleteButton) return;
+      const productId = stockStepButton?.dataset.productId || saveButton?.dataset.savePrice ||
+        stockButton?.dataset.saveStock || deleteButton?.dataset.deleteProduct;
+      const product = sellerListings.find(item => item.id === productId);
       if (!product || product.sellerId !== currentUser?.uid) {
         showToast("You can only manage products listed by your account.");
         return;
       }
       try {
+        if (stockStepButton) {
+          const change = Number(stockStepButton.dataset.stockStep);
+          stockStepButton.disabled = true;
+          await runTransaction(db, async transaction => {
+            const productRef = doc(db, "products", productId);
+            const snapshot = await transaction.get(productRef);
+            if (!snapshot.exists() || snapshot.data().sellerId !== currentUser.uid) {
+              throw new Error("This product is no longer owned by your account.");
+            }
+            const currentStock = snapshot.data().stock;
+            const nextStock = currentStock + change;
+            if (!Number.isSafeInteger(currentStock) || !Number.isSafeInteger(nextStock) ||
+                nextStock < 0 || nextStock > 1000000) {
+              throw new Error("Stock must stay between 0 and 10,00,000.");
+            }
+            transaction.update(productRef, { stock: nextStock, updatedAt: serverTimestamp() });
+          });
+          showToast("Product stock updated.");
+          return;
+        }
         if (saveButton || stockButton) {
           const actionButton = saveButton || stockButton;
           const numberInputs = actionButton.closest(".seller-product").querySelectorAll('input[type="number"]');
@@ -1613,19 +1729,13 @@
           if (!window.confirm(`Remove "${product.name}" from SHOPX?`)) return;
           deleteButton.disabled = true;
           await deleteDoc(doc(db, "products", productId));
-          try {
-            await deleteObject(storageRef(storage, product.imagePath));
-          } catch (error) {
-            console.error("SHOPX product image cleanup failed:", error);
-            showToast(`Product removed, but its image could not be deleted: ${error.message}`);
-            return;
-          }
           showToast("Your product has been removed.");
         }
       } catch (error) {
         console.error("SHOPX seller product action failed:", error);
         showToast(`Could not update your product: ${error.message}`);
       } finally {
+        if (stockStepButton) stockStepButton.disabled = false;
         if (saveButton) saveButton.disabled = false;
         if (stockButton) stockButton.disabled = false;
         if (deleteButton) deleteButton.disabled = false;
